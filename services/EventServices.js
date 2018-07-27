@@ -1,14 +1,15 @@
-import ConvertPinyin from "./../utils/";
+import ConvertPinyin from "./../utils/pinyin";
 
-const EVENT_DETAILS_BASEAPI = 'https://api.douban.com/v2';
-const EVENT_DAY_TYPE = {
+import BASE_URL from "./../utils/const";
+
+export const EVENT_DAY_TYPES = {
 	FUTURE: {displayName: '未来', typeName: 'future'},
 	WEEK: {displayName: '本周', typeName: 'week'},
 	WEEKEND: {displayName: '周末', typeName: 'weekend'},
 	TODAY: {displayName: '今天', typeName: 'today'},
 	TOMORROW: {displayName: '明天', typeName: 'tomorrow'}
 }
-const EVENT_TYPE = {
+export const EVENT_TYPES = {
 	ALL: {displayName: '所有', typeName: 'all'},
 	MUSIC: {displayName: '音乐', typeName: 'music'},
 	FILM: {displayName: '电影', typeName: 'film'},
@@ -24,7 +25,7 @@ const EVENT_TYPE = {
 
 export function fetchEventDetails(id) {
 	return new Promise((resolve, reject) => {
-		fetch(`${EVENT_DETAILS_BASEAPI}/event/${id}`)
+		fetch(`${BASE_URL}/event/${id}`)
 			.then((response) => response.json())
 			.then((json) => {
 				return resolve(json);
@@ -35,9 +36,9 @@ export function fetchEventDetails(id) {
 	})
 }
 
-export function fetchCityEvent(city) {
+export function fetchCityEvent(city, day_type='', event_type='') {
 	const cityPY = ConvertPinyin(city);
-	const EVENTS_URL = `${EVENT_DETAILS_BASEAPI}/event/list?loc=${cityPY}`;
+	const EVENTS_URL = `${BASE_URL}/event/list?loc=${cityPY}&day_type=${day_type}&type=${event_type}`;
 	return new Promise((resolve, reject) => {
 		fetch(EVENTS_URL)
 			.then((response) => response.json())
