@@ -16,14 +16,14 @@ import CityPickerScreen from './views/screens/CityPickerScreen';
 console.disableYellowBox = true;
 
 export default createStackNavigator({
-	CityPicker: {
-		screen: CityPickerScreen,
-	},
 	HomeTab: {
 		screen: HomeTabNavigation,
 		navigationOptions: {
 			header: null,
 		}
+	},
+	CityPicker: {
+		screen: CityPickerScreen,
 	},
 	EventDetails: {
 		screen: EventDetailsScreen,
@@ -34,4 +34,6 @@ export default createStackNavigator({
 	EventList: {
 		screen: EventListScreen,
 	},
+}, {
+	initialRouteName: 'CityPicker',
 });
