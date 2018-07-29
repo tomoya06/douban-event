@@ -108,6 +108,7 @@ class EventList extends React.PureComponent {
 		return item.id;
 	}
 
+	// TODO: pull-down refresh and touch-bottom load more.
 	render() {
 		return (
 			<FlatList
