@@ -10,6 +10,8 @@ import LoginScreen from "./views/screens/LoginScreen";
 import EventListScreen from "./views/screens/EventListScreen";
 import CityPickerScreen from './views/screens/CityPickerScreen';
 
+import DemoScreen from "./views/screens/DemoScreen";
+
 /**
  * Disable Debug Yellow Warning Box
  */
@@ -18,9 +20,6 @@ console.disableYellowBox = true;
 export default createStackNavigator({
 	HomeTab: {
 		screen: HomeTabNavigation,
-		navigationOptions: {
-			header: null,
-		}
 	},
 	CityPicker: {
 		screen: CityPickerScreen,
@@ -34,6 +33,12 @@ export default createStackNavigator({
 	EventList: {
 		screen: EventListScreen,
 	},
+	Demo: {
+		screen: DemoScreen,
+	}
 }, {
-	initialRouteName: 'CityPicker',
+	initialRouteName: 'EventList',
+	navigationOptions: {
+		header: null,
+	}
 });

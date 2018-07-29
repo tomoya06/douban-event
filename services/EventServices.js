@@ -1,27 +1,27 @@
 import ConvertPinyin from "./../utils/pinyin";
 
-import BASE_URL from "./../utils/const";
+import {BASE_URL} from "./../utils/const";
 
-export const EVENT_DAY_TYPES = {
-	FUTURE: {displayName: '未来', typeName: 'future'},
-	WEEK: {displayName: '本周', typeName: 'week'},
-	WEEKEND: {displayName: '周末', typeName: 'weekend'},
-	TODAY: {displayName: '今天', typeName: 'today'},
-	TOMORROW: {displayName: '明天', typeName: 'tomorrow'}
-}
-export const EVENT_TYPES = {
-	ALL: {displayName: '所有', typeName: 'all'},
-	MUSIC: {displayName: '音乐', typeName: 'music'},
-	FILM: {displayName: '电影', typeName: 'film'},
-	DRAMA: {displayName: '戏剧', typeName: 'drama'},
-	COMMONWEAL: {displayName: '公益', typeName: 'comonweal'},
-	SALON: {displayName: '沙龙', typeName: 'salon'},
-	EXHIBITION: {displayName: '展览', typeName: 'exhibition'},
-	PARTY: {displayName: '聚会', typeName: 'party'},
-	SPORTS: {displayName: '运动', typeName: 'sports'},
-	TRAVEL: {displayName: '旅行', typeName: 'travel'},
-	OTHERS: {displayName: '其他', typeName: 'others'}
-}
+export const EVENT_DAY_TYPES = [
+	{displayName: '所有', typeName: ''},
+	{displayName: '今天', typeName: 'today'},
+	{displayName: '明天', typeName: 'tomorrow'},
+	{displayName: '周末', typeName: 'weekend'},
+	{displayName: '本周', typeName: 'week'},
+];
+export const EVENT_TYPES = [
+	{displayName: '所有', typeName: 'all'},
+	{displayName: '音乐', typeName: 'music'},
+	{displayName: '电影', typeName: 'film'},
+	{displayName: '戏剧', typeName: 'drama'},
+	{displayName: '公益', typeName: 'comonweal'},
+	{displayName: '沙龙', typeName: 'salon'},
+	{displayName: '展览', typeName: 'exhibition'},
+	{displayName: '聚会', typeName: 'party'},
+	{displayName: '运动', typeName: 'sports'},
+	{displayName: '旅行', typeName: 'travel'},
+	{displayName: '其他', typeName: 'others'}
+];
 
 export function fetchEventDetails(id) {
 	return new Promise((resolve, reject) => {
@@ -36,13 +36,15 @@ export function fetchEventDetails(id) {
 	})
 }
 
-export function fetchCityEvent(city, day_type='', event_type='') {
+export function fetchCityEvents(city, day_type='', event_type='') {
 	const cityPY = ConvertPinyin(city);
 	const EVENTS_URL = `${BASE_URL}/event/list?loc=${cityPY}&day_type=${day_type}&type=${event_type}`;
 	return new Promise((resolve, reject) => {
+		console.log("fetching events from...", EVENTS_URL);
 		fetch(EVENTS_URL)
 			.then((response) => response.json())
 			.then((json) => {
+				console.log(json);
 				return resolve(json);
 			})
 			.catch((error) => {

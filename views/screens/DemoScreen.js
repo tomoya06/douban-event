@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 
-import { 
-	View
- } from "react-native";
+import {
+	Screen,
+	NavigationBar,
+	Title,
+	Button,
+	Icon,
+	TouchableOpacity,
+	View,
+} from '../../node_modules/@shoutem/ui';
 
 class DemoScreen extends Component {
 
@@ -12,7 +18,13 @@ class DemoScreen extends Component {
 
 	render() {
 		return (
-			<View></View>
+			<Screen>
+				<TouchableOpacity onPress={() => console.log("click outside")}>
+					<View style={{ height: 300, width: '100%', backgroundColor: '#d9d9d9' }}>
+						<Button onPress={() => console.log("click button")}><Title>CLICK ME</Title></Button>
+					</View>
+				</TouchableOpacity>
+			</Screen>
 		);
 	}
 }

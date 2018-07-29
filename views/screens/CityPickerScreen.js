@@ -11,15 +11,22 @@ import {
 import {
 	Grid,
 	Col,
+	Row,
 } from "react-native-easy-grid";
 
 import {
 	Spinner,
 	Divider,
 	Heading,
+	NavigationBar,
+	Icon,
 	Title,
 	Subtitle,
+	Screen,
+	Button,
 } from "@shoutem/ui"
+
+import GoBackButton from "./../components/GoBackButton";
 
 import {
 	MapLocations,
@@ -30,27 +37,7 @@ import {
 	setLocation, getLocation,
 } from "./../../services/StorageService";
 
-const styles = StyleSheet.create({
-	fillParent: {
-		width: '100%',
-		height: '100%',
-	},
-	listItem: {
-		height: 40,
-		width: '100%',
-		flex: 1,
-		marginLeft: 6,
-		justifyContent: 'center',
-	},
-	parentList: {
-		backgroundColor: '#d9d9d9',
-	},
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	}
-})
+import commonStyles from "./../styles/commonStyles";
 
 /**
  * props:
@@ -67,7 +54,7 @@ class PCListItem extends React.PureComponent {
 	render() {
 		return (
 			<TouchableOpacity
-				style={styles.listItem}
+				style={commonStyles.listItem}
 				onPress={this._onPress}
 			>
 				<Subtitle>{this.props.displayName}</Subtitle>
@@ -121,7 +108,7 @@ class ProvinceList extends React.PureComponent {
 	render() {
 		return (
 			<FlatList
-				style={[styles.fillParent, styles.parentList]}
+				style={[commonStyles.fillParent, commonStyles.parentList]}
 				data={this.props.provinces}
 				keyExtractor={this._keyExtractor}
 				renderItem={this._renderItem}
@@ -160,7 +147,7 @@ class CityList extends React.PureComponent {
 	render() {
 		return (
 			<FlatList
-				style={[styles.fillParent]}
+				style={[commonStyles.fillParent]}
 				data={this.props.cities}
 				keyExtractor={this._keyExtractor}
 				renderItem={this._renderItem}
@@ -173,7 +160,7 @@ class CityList extends React.PureComponent {
 class SpinnerView extends Component {
 	render() {
 		return (
-			<View style={styles.container}>
+			<View style={commonStyles.container}>
 				<Spinner size="large" />
 			</View>
 		)
@@ -216,6 +203,7 @@ class CityPickerScreen extends Component {
 	}
 
 	_navigate = async (id, displayName) => {
+		// TODO: Add Router
 		// console.log('will navigate to ', {id, displayName});
 		const setResult = await setLocation({ id, displayName });
 		console.log(setResult);
@@ -226,26 +214,34 @@ class CityPickerScreen extends Component {
 	render() {
 		return (
 			<Grid>
-				<Col size={2}>
-					<ProvinceList
-						provinces={this.state.provinces}
-						onLoadedCities={this._onLoadedCities}
-						navigate={this._navigate}
-						loadingCities={this._loadingCities}
+				<Row style={{ height: 70 }}>
+					<NavigationBar
+						leftComponent={<GoBackButton navigation={this.props.navigation}/>}
+						centerComponent={<Title>CITY</Title>}
 					/>
-				</Col>
-				<Col size={3}>
-					{this.state.isLoadingCities ?
-						(
-							<SpinnerView />
-						) : (
-							<CityList
-								cities={this.state.subCities}
-								navigate={this._navigate}
-							/>
-						)}
+				</Row>
+				<Row>
+					<Col size={2}>
+						<ProvinceList
+							provinces={this.state.provinces}
+							onLoadedCities={this._onLoadedCities}
+							navigate={this._navigate}
+							loadingCities={this._loadingCities}
+						/>
+					</Col>
+					<Col size={3}>
+						{this.state.isLoadingCities ?
+							(
+								<SpinnerView />
+							) : (
+								<CityList
+									cities={this.state.subCities}
+									navigate={this._navigate}
+								/>
+							)}
 
-				</Col>
+					</Col>
+				</Row>
 			</Grid>
 		);
 	}
