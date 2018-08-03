@@ -86,9 +86,15 @@ class EventItem extends React.PureComponent {
 /**
  * props:
  * events: events
+ * isLoading: for flatlist to show loading
+ * fetchEventList: function(flag: boolean). trigger parent's fetch new list. flag=true: load more. flag=false: reload
  *
  */
 class EventList extends React.PureComponent {
+
+	constructor(props) {
+		super(props);
+	}
 
 	_onPressItem = (event) => {
 		// navigate to event detail
@@ -108,14 +114,24 @@ class EventList extends React.PureComponent {
 		return item.id;
 	}
 
+	componentDidUpdate() {
+		if (typeof this.props.event !== 'undefined') {
+			this._flatlistRef.scrollToIndex({ animated: true, index: 0 });
+		}
+	}
+
 	// TODO: pull-down refresh and touch-bottom load more.
 	render() {
 		return (
 			<FlatList
+				ref={(ref) => { this._flatlistRef = ref; }}
 				data={this.props.events}
 				renderItem={this._renderItem}
 				keyExtractor={this._keyExtrator}
 				ItemSeparatorComponent={() => <Divider styleName="section-header" />}
+				refreshing={this.props.isLoading}
+				onEndReached={() => console.log('reach end')}
+				onRefresh={() => console.log('refresh')}
 			/>
 		)
 	}
@@ -129,9 +145,10 @@ class EventFilterScreen extends Component {
 		this.state = {
 			locID: null,
 			locDisplayName: '',
-			day_type: 0,
-			event_type: 0,
+			day_type: EVENT_DAY_TYPES[0],
+			event_type: EVENT_TYPES[0],
 			eventList: [],
+			isLoading: false,
 		}
 	}
 
@@ -152,22 +169,47 @@ class EventFilterScreen extends Component {
 		}
 	}
 
-	_fetchEventList = async () => {
+	_fetchEventListAsync = async (loadMore = false) => {
+		this.setState({ isLoading: true });
 		try {
+			console.log(this.state.day_type, this.state.event_type);
 			const fetchResult = await fetchCityEvents(
-				this.state.locID, EVENT_DAY_TYPES[this.state.day_type], EVENT_TYPES[this.state.event_type]
+				this.state.locID,
+				this.state.day_type.typeName || '',
+				this.state.event_type.typeName || '',
+				loadMore ? this.state.eventList.length : 0
 			);
 			this.setState({
 				eventList: fetchResult.events,
 			})
 		} catch (error) {
 			// error callback
+			console.log(error);
 		}
+		this.setState({ isLoading: false });
 	}
 
 	async componentDidMount() {
+		console.log('component did mount')
 		await this._getLocation();
-		await this._fetchEventList();
+		await this._fetchEventListAsync();
+	}
+
+	_selectDate = async (date) => {
+		console.log(date);
+		this.setState({
+			day_type: date,
+		}, async () => {
+			await this._fetchEventListAsync();
+		})
+	}
+
+	_selectType = async (type) => {
+		this.setState({
+			event_type: type,
+		}, async () => {
+			await this._fetchEventListAsync();
+		})
 	}
 
 	_rightComponent = () => (
@@ -181,14 +223,14 @@ class EventFilterScreen extends Component {
 	)
 
 	_filterArea = () => (
-		<Row style={{height: 50}}>
+		<Row style={{ height: 50 }}>
 			<Col>
 				<View styleName="horizontal h-center v-center overlay fill-parent">
 					<Icon name="events" />
 					<DropDownMenu
 						options={EVENT_DAY_TYPES}
-						selectedOption={EVENT_DAY_TYPES[this.state.day_type]}
-						onOptionSelected={(date) => console.log(date)}
+						selectedOption={this.state.day_type}
+						onOptionSelected={(date) => this._selectDate(date)}
 						titleProperty="displayName"
 						valueProperty="typeName"
 					/>
@@ -199,8 +241,8 @@ class EventFilterScreen extends Component {
 					<Icon name="books" />
 					<DropDownMenu
 						options={EVENT_TYPES}
-						selectedOption={EVENT_TYPES[this.state.event_type]}
-						onOptionSelected={(type) => console.log(type)}
+						selectedOption={this.state.event_type}
+						onOptionSelected={(type) => this._selectType(type)}
 						titleProperty="displayName"
 						valueProperty="typeName"
 					/>
@@ -222,6 +264,8 @@ class EventFilterScreen extends Component {
 				<Row>
 					<EventList
 						events={this.state.eventList}
+						isLoading={this.state.isLoading}
+						fetchEventList={this._fetchEventListAsync}
 					/>
 				</Row>
 				{this._filterArea()}

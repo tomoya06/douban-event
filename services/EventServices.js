@@ -36,9 +36,9 @@ export function fetchEventDetails(id) {
 	})
 }
 
-export function fetchCityEvents(city, day_type='', event_type='') {
+export function fetchCityEvents(city, day_type='', event_type='', start_index=0) {
 	const cityPY = ConvertPinyin(city);
-	const EVENTS_URL = `${BASE_URL}/event/list?loc=${cityPY}&day_type=${day_type}&type=${event_type}`;
+	const EVENTS_URL = `${BASE_URL}/event/list?loc=${cityPY}&day_type=${day_type}&type=${event_type}&start=${start_index}`;
 	return new Promise((resolve, reject) => {
 		console.log("fetching events from...", EVENTS_URL);
 		fetch(EVENTS_URL)
