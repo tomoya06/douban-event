@@ -130,8 +130,9 @@ class EventList extends React.PureComponent {
 				keyExtractor={this._keyExtrator}
 				ItemSeparatorComponent={() => <Divider styleName="section-header" />}
 				refreshing={this.props.isLoading}
-				onEndReached={() => console.log('reach end')}
-				onRefresh={() => console.log('refresh')}
+				onRefresh={() => this.props.fetchEventList(false)}
+				onEndReached={() => this.props.fetchEventList(true)}
+				onEndReachedThreshold={0.2}
 			/>
 		)
 	}
@@ -170,6 +171,7 @@ class EventFilterScreen extends Component {
 	}
 
 	_fetchEventListAsync = async (loadMore = false) => {
+		console.log('@@@@@ will fetch events...');
 		this.setState({ isLoading: true });
 		try {
 			console.log(this.state.day_type, this.state.event_type);
@@ -180,7 +182,7 @@ class EventFilterScreen extends Component {
 				loadMore ? this.state.eventList.length : 0
 			);
 			this.setState({
-				eventList: fetchResult.events,
+				eventList: loadMore? [...this.state.eventList, ...fetchResult.events]: fetchResult.events,
 			})
 		} catch (error) {
 			// error callback
@@ -219,7 +221,7 @@ class EventFilterScreen extends Component {
 	)
 
 	_centerComponent = () => (
-		<Title>EVENTS</Title>
+		<Title>LIST</Title>
 	)
 
 	_filterArea = () => (
