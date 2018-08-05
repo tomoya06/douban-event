@@ -6,6 +6,12 @@ import {
 	FAKE_DATA_20,
 } from "./../utils/const";
 
+import {
+	getToken,
+	setToken,
+	getUser,
+} from "./StorageService";
+
 export const EVENT_DAY_TYPES = [
 	{ displayName: '所有', typeName: '' },
 	{ displayName: '今天', typeName: 'today' },
@@ -55,5 +61,14 @@ export function fetchCityEvents(city, day_type = '', event_type = '', start_inde
 			.catch((error) => {
 				return reject(error);
 			})
+	})
+}
+
+export function markEvent(id, statusID = 0, flagID = true) {
+	return new Promise((resolve, reject) => {
+
+		const _status = statusID == 0 ? 'wishers' : 'participants';
+		const _flag = flagID ? 'POST' : 'DELETE';
+		console.log(`Marking Event ${id} as ${_status} with flag `)
 	})
 }

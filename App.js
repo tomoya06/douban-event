@@ -37,7 +37,7 @@ export default createStackNavigator({
 		screen: DemoScreen,
 	}
 }, {
-	initialRouteName: 'EventDetails',
+	initialRouteName: 'Login',
 	navigationOptions: {
 		header: null,
 	}

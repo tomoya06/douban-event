@@ -278,7 +278,7 @@ class EventDetails extends Component {
 				</Row>
 				<Row>
 					<ScrollView
-						stickyHeaderIndices={[6]}
+						stickyHeaderIndices={[5]}
 					>
 						<EventImageRow eventDetails={event} />
 
