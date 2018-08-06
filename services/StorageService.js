@@ -5,6 +5,7 @@ import {
 const LOCATION_KEY = 'LOCATION';
 const TOKEN_KEY = 'ACCESS_TOKEN';
 const USER_KEY = 'USER_INFO';
+const USER_LOGIN_KEY = 'USER_LOGIN';
 
 function setStorageFunctionFactory(KEY) {
 	return async function (data) {
@@ -61,23 +62,11 @@ export const setToken = setStorageFunctionFactory(TOKEN_KEY);
 export const getToken = getStorageFunctionFactory(TOKEN_KEY);
 
 /**
- * USER INFO FORMAT:
+ * USER LOGIN FORMAT:
  * JSON.stringify({
-    "loc_id": "118288",
-    "name": "tomoya06",
-    "created": "2013-03-16 12:39:18",
-    "is_banned": false,
-    "is_suicide": false,
-    "loc_name": "广东湛江",
-    "avatar": "https://img3.doubanio.com/icon/u70225597-6.jpg",
-    "signature": "我是签名档",
-    "uid": "70225597",
-    "alt": "https://www.douban.com/people/70225597/",
-    "desc": "打分偏高，仅短期内有效 / 一个没有上进心的男子 / 短暫感官衝擊 / @Nanfang Rd. Studio ",
-    "type": "user",
-    "id": "70225597",
-    "large_avatar": "https://img3.doubanio.com/icon/up70225597-6.jpg"
-})
+ * 		username: 'tomoya06',
+ * 		password: 'password',
+ * })
  */
-export const setUser = setStorageFunctionFactory(USER_KEY);
-export const getUser = getStorageFunctionFactory(USER_KEY);
+export const setUserLogin = setStorageFunctionFactory(USER_LOGIN_KEY);
+export const getUserLogin = getStorageFunctionFactory(USER_LOGIN_KEY);

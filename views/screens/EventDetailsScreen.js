@@ -245,7 +245,8 @@ class EventDetails extends Component {
 			await this.setState({ eventID: paramID });
 		}
 		console.log(this.state.eventID);
-		const _eventDetails = await fetchEventDetails(this.state.eventID);
+		const [error, _eventDetails] = await fetchEventDetails(this.state.eventID);
+		if (error) { return; }
 		await this.setState({ eventDetails: _eventDetails });
 	}
 

@@ -1,6 +1,8 @@
 import {
-    getUser,
-    setUser,
+    setUserInfo,
+    getUserInfo,
+    setUserLogin,
+    getUserLogin,
     setToken,
     getToken,
 } from "./StorageService";
@@ -69,12 +71,34 @@ export async function userLoginService(username, password) {
     if (loginError) { return false; }
     try {
         const setTokenRes = await setToken(loginRes);
-        if (setTokenRes) {
-            const curToken = await getToken();
+        const setUserLoginRes = await setUserLogin({ username, password });
+        if (setTokenRes && setUserLoginRes) {
+            // const curToken = await getToken();
             return true;
         }
         throw new Error('storage failed');
     } catch (error) {
         return false;
     }
+}
+
+export async function userLogoutService() {
+    const logoutUserRes = await setUserLogin(null);
+    const logoutTokenRes = await setToken(null);
+    return (logoutUserRes && logoutTokenRes);
+}
+
+export async function autoLogin() {
+    const curUserLogin = await getUserLogin();
+    if (curUserLogin == null) { return false; }
+    const { username, password } = curUserLogin;
+    const loginRes = await userLoginService(username, password);
+    return loginRes;
+}
+
+export async function isLogin() {
+    const curUserLogin = await getUserLogin();
+    const curToken = await getToken();
+    if (curUserLogin !== null && curToken !== null) { return curToken; }
+    return null;
 }

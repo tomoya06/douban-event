@@ -8,9 +8,12 @@ import {
 
 import {
 	getToken,
-	setToken,
 	getUser,
 } from "./StorageService";
+
+import {
+	isLogin
+} from "./../services/UserServices";
 
 export const EVENT_DAY_TYPES = [
 	{ displayName: '所有', typeName: '' },
@@ -33,15 +36,29 @@ export const EVENT_TYPES = [
 	{ displayName: '其他', typeName: 'others' }
 ];
 
-export function fetchEventDetails(id) {
+export const USER_STATUS = {
+	WISH: "wishers",
+	WILL: "participants",
+}
+
+export async function fetchEventDetails(id) {
+
+	let fetchOption = {};
+	const isLoginRes = await isLogin();
+	if (isLoginRes !== null) {
+		fetchOption = {
+			'Authorization': `Bearer ${isLoginRes.access_token}`,
+		}
+	}
+
 	return new Promise((resolve, reject) => {
-		fetch(`${BASE_URL}/event/${id}`)
+		fetch(`${BASE_URL}/event/${id}`, fetchOption)
 			.then((response) => response.json())
-			.then((json) => {
-				return resolve(json);
+			.then((jRes) => {
+				return resolve([null, jRes]);
 			})
 			.catch((error) => {
-				return reject(error);
+				return resolve([error, null]);
 			})
 	})
 }
@@ -64,11 +81,29 @@ export function fetchCityEvents(city, day_type = '', event_type = '', start_inde
 	})
 }
 
-export function markEvent(id, statusID = 0, flagID = true) {
+export function markEvent(id, userStatus, flagID = true) {
 	return new Promise((resolve, reject) => {
 
-		const _status = statusID == 0 ? 'wishers' : 'participants';
-		const _flag = flagID ? 'POST' : 'DELETE';
-		console.log(`Marking Event ${id} as ${_status} with flag `)
+		const _method = flagID ? 'POST' : 'DELETE';
+		const markURL = `${BASE_URL}/event/${id}/${userStatus}`;
+
+		console.log(`Marking Event ${id} as ${_status} with ${_method} `);
+
+		const markOption = {
+			method: _method,
+		}
+
+		fetch(markURL, markOption)
+			.then((response) => {
+				if (response.ok) { return response.json(); }
+				throw new Error(response.status);
+			})
+			.then((jRes) => {
+				if (typeof jRes.msg !== 'undefined') { throw new Error(jRes.msg); }
+				return resolve(true);
+			})
+			.catch((error) => {
+				return resolve(false);
+			})
 	})
 }
