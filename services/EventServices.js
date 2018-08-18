@@ -45,9 +45,12 @@ export async function fetchEventDetails(id) {
 
 	let fetchOption = {};
 	const isLoginRes = await isLogin();
+	console.log(isLoginRes);
 	if (isLoginRes !== null) {
 		fetchOption = {
-			'Authorization': `Bearer ${isLoginRes.access_token}`,
+			headers: {
+				'Authorization': `Bearer ${isLoginRes.access_token}`,
+			}
 		}
 	}
 
@@ -81,9 +84,16 @@ export function fetchCityEvents(city, day_type = '', event_type = '', start_inde
 	})
 }
 
+/**
+ * 
+ * @param {string} id event ID
+ * @param {string} userStatus CONST.js USER_STATUS
+ * @param {boolean} flagID true: add mark / false: delete mark
+ */
 export function markEvent(id, userStatus, flagID = true) {
-	return new Promise((resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 
+		const _status = userStatus;
 		const _method = flagID ? 'POST' : 'DELETE';
 		const markURL = `${BASE_URL}/event/${id}/${userStatus}`;
 
@@ -92,9 +102,16 @@ export function markEvent(id, userStatus, flagID = true) {
 		const markOption = {
 			method: _method,
 		}
+		const isLoginRes = await isLogin();
+		if (isLoginRes !== null) {
+			markOption.headers = {
+				'Authorization': `Bearer ${isLoginRes.access_token}`,
+			}
+		}
 
 		fetch(markURL, markOption)
 			.then((response) => {
+				console.log(response);
 				if (response.ok) { return response.json(); }
 				throw new Error(response.status);
 			})

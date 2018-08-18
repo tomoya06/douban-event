@@ -12,7 +12,7 @@
 * fee_str(ticket/fee cost)
 
 * wisher_count / participant_count
-* STATUS!!!! (GET WITH AUTH)
+* STATUS!!!! (GET WITH AUTH)(要参加/感兴趣)
 
 * content(HTML)
 * owner : avatar, name

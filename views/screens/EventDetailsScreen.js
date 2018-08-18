@@ -16,6 +16,7 @@ import {
 	Divider,
 	Html,
 	Tile,
+	Spinner,
 } from "@shoutem/ui";
 
 import {
@@ -35,6 +36,7 @@ import {
 
 import {
 	fetchEventDetails,
+	markEvent,
 } from "./../../services/EventServices";
 
 /**
@@ -42,11 +44,28 @@ import {
  * eventDetails: event details object
  */
 class EventImageRow extends Component {
+
+	_renderContent = ()=> {
+		return (
+			<Grid> 
+				<Image 
+					style={{
+						flex: 1,
+						resizeMode: 'contain',
+					}}
+					source={{uri: this.props.eventDetails.image_hlarge}}
+				/>
+			</Grid>
+		)
+	}
+
 	render() {
 		const details = this.props.eventDetails;
 		return details && (
 			<View>
-				<Lightbox>
+				<Lightbox
+					renderContent={this._renderContent}
+				>
 					<Image
 						styleName="large-wide"
 						source={{ uri: details.image_hlarge }}
@@ -110,8 +129,19 @@ class BasicInfoRow extends Component {
 /**
  * props: 
  * eventDetails: event details
+ * markEvent: function(status, boolean);
+ * isLoading: boolean
  */
 class UserActionRow extends Component {
+
+	_markEvent = (status) => {
+		this.props.markEvent(status, true);
+	}
+
+	_deleteMarkEvent = (status) => {
+		this.props.markEvent(USER_STATUS[status], false);
+	}
+
 	render() {
 		const details = this.props.eventDetails;
 		// const wish_styleName = details.status === USER_STATUS.WISH ? '' : 'secondary';
@@ -120,36 +150,80 @@ class UserActionRow extends Component {
 			<Tile
 				styleName="md-gutter-vertical"
 			>
-				<View styleName="horizontal">
-					<Button
-						styleName="confirmation"
-						onPress={() => console.log('wish pressed')}
-					>
-						<Icon name="like" />
-						<Text>{'ADD TO WISH'}</Text>
-					</Button>
-					<Button
-						styleName="confirmation secondary"
-						onPress={() => console.log('participant pressed')}
-					>
-						<Icon name="notifications" />
-						<Text>{'TAKE ME IN'}</Text>
-					</Button>
-				</View>
-				<View styleName="horizontal sm-gutter-top">
-					<Button
-						styleName="confirmation clear"
-						disabled={true}
-					>
-						<Caption>{"WITH OTHER " + details.wisher_count}</Caption>
-					</Button>
-					<Button
-						styleName="confirmation clear"
-						disabled={true}
-					>
-						<Caption>{"WITH OTHER " + details.participant_count}</Caption>
-					</Button>
-				</View>
+
+				{
+					details.status ?
+						(
+							<View styleName="horizontal">
+								<Button
+									styleName={details.status == USER_STATUS.wishCN ? 'confirmation' : "confirmation secondary"}
+									onPress={() => this._deleteMarkEvent(details.status)}
+								>
+									<Icon name={details.status == USER_STATUS.wishCN ? 'like' : 'notifications'} />
+									<Text>{details.status == USER_STATUS.wishCN ? 'LIKED' : 'I\'M IN'}</Text>
+								</Button>
+							</View>
+						) : (
+							<View styleName="horizontal">
+								<Button
+									styleName="confirmation"
+									onPress={() => this._markEvent(USER_STATUS.wish)}
+								>
+									<Icon name="like" />
+									<Text>{'ADD TO WISH'}</Text>
+								</Button>
+								<Button
+									styleName="confirmation secondary"
+									onPress={() => this._markEvent(USER_STATUS.in)}
+								>
+									<Icon name="notifications" />
+									<Text>{'TAKE ME IN'}</Text>
+								</Button>
+							</View>
+						)
+				}
+
+				{
+					this.props.isLoading ?
+						(
+							<View styleName="horizontal sm-gutter-top">
+								<Button
+									styleName="confirmation clear"
+									disabled={true}
+								>
+									<Spinner />
+								</Button>
+							</View>
+						) : (details.status ?
+							(
+								<View styleName="horizontal sm-gutter-top">
+									<Button
+										styleName="confirmation clear"
+										disabled={true}
+									>
+										<Caption>{`WITH TOTAL ${details.wisher_count} LIKED AND ${details.participant_count} IN`}</Caption>
+									</Button>
+								</View>
+							) : (
+								<View styleName="horizontal sm-gutter-top">
+									<Button
+										styleName="confirmation clear"
+										disabled={true}
+									>
+										<Caption>{"WITH OTHER " + details.wisher_count}</Caption>
+									</Button>
+									<Button
+										styleName="confirmation clear"
+										disabled={true}
+									>
+										<Caption>{"WITH OTHER " + details.participant_count}</Caption>
+									</Button>
+								</View>
+							)
+						)
+
+				}
+
 			</Tile>
 		)
 	}
@@ -233,6 +307,7 @@ class EventDetails extends Component {
 			eventID: '',
 			eventDetails: null,
 			contentCollapsed: true,
+			isLoading: false,
 		}
 	}
 
@@ -266,6 +341,21 @@ class EventDetails extends Component {
 		})
 	}
 
+	_markEventAsync = async (status, flag) => {
+		await this.setState({ isLoading: true });
+		const markRes = await markEvent(this.state.eventID, status, flag);
+		if (!markRes) {
+			// TODO: no auth or network error. try again. make some noise
+			return;
+		}
+		const [error, _eventDetails] = await fetchEventDetails(this.state.eventID);
+		if (error) { return; }
+		this.setState({
+			eventDetails: _eventDetails,
+			isLoading: false,
+		})
+	}
+
 	render() {
 		const event = this.state.eventDetails;
 		return (
@@ -285,7 +375,7 @@ class EventDetails extends Component {
 
 						<View styleName="sm-gutter-top" />
 						<BasicInfoRow eventDetails={event} />
-						<UserActionRow eventDetails={event} />
+						<UserActionRow eventDetails={event} markEvent={this._markEventAsync} isLoading={this.state.isLoading} />
 						<View styleName="sm-gutter-top" />
 
 						<IntroToggle
