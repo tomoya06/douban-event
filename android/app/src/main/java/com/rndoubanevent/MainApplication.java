@@ -2,6 +2,7 @@ package com.rndoubanevent;
 
 import android.app.Application;
 
+import com.vonovak.AddCalendarEventPackage;
 import com.facebook.react.ReactApplication;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -28,7 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new PhotoViewPackage(),
             new LinearGradientPackage(),
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+            new AddCalendarEventPackage()
       );
     }
 

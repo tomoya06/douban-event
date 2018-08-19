@@ -39,21 +39,25 @@ import {
 	markEvent,
 } from "./../../services/EventServices";
 
+import {
+	addEventToCalendar,
+} from "./../../services/CalendarService";
+
 /**
  * props:
  * eventDetails: event details object
  */
 class EventImageRow extends Component {
 
-	_renderContent = ()=> {
+	_renderContent = () => {
 		return (
-			<Grid> 
-				<Image 
+			<Grid>
+				<Image
 					style={{
 						flex: 1,
 						resizeMode: 'contain',
 					}}
-					source={{uri: this.props.eventDetails.image_hlarge}}
+					source={{ uri: this.props.eventDetails.image_hlarge }}
 				/>
 			</Grid>
 		)
@@ -91,12 +95,17 @@ class EventImageRow extends Component {
  * eventDetails: event details object
  */
 class BasicInfoRow extends Component {
+
+	_addEventToCalendar = () => {
+		addEventToCalendar(this.props.eventDetails);
+	}
+
 	render() {
 		const details = this.props.eventDetails;
 		return details && (
 			<View>
 				<TouchableOpacity
-					onPress={() => console.log('time pressed')}
+					onPress={() => this._addEventToCalendar()}
 				>
 					<ShRow styleName="small">
 						<Icon name="add-event" />
