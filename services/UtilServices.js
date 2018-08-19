@@ -11,7 +11,7 @@ function formatDate(dateStr) {
 
 export function copyText(txt) {
     Clipboard.setString(txt)
-    
+    // TODO: make some noise about copy
 }
 
 export function addEventToCalendar(eventDetails) {
