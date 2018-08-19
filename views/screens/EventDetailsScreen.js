@@ -41,7 +41,8 @@ import {
 
 import {
 	addEventToCalendar,
-} from "./../../services/CalendarService";
+	copyText,
+} from "./../../services/UtilServices";
 
 /**
  * props:
@@ -76,7 +77,7 @@ class EventImageRow extends Component {
 					/>
 				</Lightbox>
 				<TouchableOpacity
-					onPress={() => console.log('title pressed')}
+					onPress={() => copyText(details.title)}
 				>
 					<ShRow>
 						<View styleName="vertical">
