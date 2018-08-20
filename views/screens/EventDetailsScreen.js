@@ -42,6 +42,7 @@ import {
 import {
 	addEventToCalendar,
 	copyText,
+	toastMsg,
 } from "./../../services/UtilServices";
 
 /**
@@ -100,7 +101,7 @@ class BasicInfoRow extends Component {
 	_addEventToCalendar = () => {
 		addEventToCalendar(this.props.eventDetails);
 	}
-
+// TODO: add open map util
 	render() {
 		const details = this.props.eventDetails;
 		return details && (
@@ -345,6 +346,8 @@ class EventDetails extends Component {
 		><Icon name="share-android" /></Button>
 	)
 
+	// TODO: add share function
+
 	_toggleContentCollapse = () => {
 		this.setState({
 			contentCollapsed: !this.state.contentCollapsed,
@@ -354,16 +357,14 @@ class EventDetails extends Component {
 	_markEventAsync = async (status, flag) => {
 		await this.setState({ isLoading: true });
 		const markRes = await markEvent(this.state.eventID, status, flag);
+		await this.setState({ isLoading: false });
 		if (!markRes) {
-			// TODO: no auth or network error. try again. make some noise
+			toastMsg("Oops...How's Your Network? OR, Have You Logged In?");
 			return;
 		}
 		const [error, _eventDetails] = await fetchEventDetails(this.state.eventID);
 		if (error) { return; }
-		this.setState({
-			eventDetails: _eventDetails,
-			isLoading: false,
-		})
+		this.setState({ eventDetails: _eventDetails });
 	}
 
 	render() {

@@ -12,6 +12,8 @@
     "react-native": "0.55.4",
     "react-native-add-calendar-event": "^2.0.2",
     "react-native-easy-grid": "^0.2.0",
+    "react-native-root-siblings": "^3.0.0",
+    "react-native-root-toast": "^3.0.1",
     "react-native-swiper": "^1.5.13",
     "react-navigation": "^2.9.3"
   },
