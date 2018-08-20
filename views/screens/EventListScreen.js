@@ -40,10 +40,8 @@ import {
 	fetchCityEvents,
 } from "./../../services/EventServices";
 
-const DEFAULT_LOCATION = {
-	id: '118281',
-	displayName: '广州'
-}
+
+import { DEFAULT_LOCATION } from "./../../utils/const";
 
 const styles = StyleSheet.create({
 
@@ -97,8 +95,9 @@ class EventList extends React.PureComponent {
 	}
 
 	_onPressItem = (event) => {
-		// navigate to event detail
-		console.log(event.title);
+		// TODO: navigate to event detail
+		// console.log(event.title);
+		// this.props.navigation.
 	}
 
 	_renderItem = ({ item }) => {
@@ -153,48 +152,60 @@ class EventFilterScreen extends Component {
 		}
 	}
 
+	componentWillMount() {
+		this.willFocusListener = this.props.navigation.addListener('willFocus', async payload => {
+			const locUpdateRes = await this._getLocation();
+			if (!locUpdateRes) { return; }
+			await this._fetchEventListAsync();
+		})
+	}
+
+	componentWillUnmount() {
+		this.willFocusListener.remove();
+	}
+
 	_getLocation = async () => {
 		const loc = await getLocation();
-		if (loc === null || loc === undefined) {
-			console.log("No location in storage. Use default Guangzhou. ");
+		if (loc.id === this.state.locID) { return false; }
+		if (loc === null) {
+			// console.log("No location in storage. Use default Guangzhou. ");
 			this.setState({
 				locID: DEFAULT_LOCATION.id,
 				locDisplayName: DEFAULT_LOCATION.displayName,
 			})
 		} else {
-			console.log("location: ", loc.displayName, " id: ", loc.id);
+			// console.log("location: ", loc.displayName, " id: ", loc.id);
 			this.setState({
 				locID: loc.id,
 				locDisplayName: loc.displayName,
 			})
 		}
+		return true;
 	}
 
 	_fetchEventListAsync = async (loadMore = false) => {
-		console.log('@@@@@ will fetch events...');
 		this.setState({ isLoading: true });
 		try {
-			console.log(this.state.day_type, this.state.event_type);
+			// console.log(this.state.day_type, this.state.event_type);
 			const fetchResult = await fetchCityEvents(
 				this.state.locID,
 				this.state.day_type.typeName || '',
 				this.state.event_type.typeName || '',
 				loadMore ? this.state.eventList.length : 0
 			);
+			const _newList = loadMore ? (
+				fetchResult.total < this.state.eventList.length ?
+					[...this.state.eventList, ...fetchResult.events] :
+					this.state.eventList
+			) : fetchResult.events;
 			this.setState({
-				eventList: loadMore? [...this.state.eventList, ...fetchResult.events]: fetchResult.events,
+				eventList: _newList,
 			})
 		} catch (error) {
 			// error callback
 			console.log(error);
 		}
 		this.setState({ isLoading: false });
-	}
-
-	async componentDidMount() {
-		console.log('component did mount')
-		await this._getLocation();
-		await this._fetchEventListAsync();
 	}
 
 	_selectDate = async (date) => {

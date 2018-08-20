@@ -5,6 +5,7 @@ import {
     getUserLogin,
     setToken,
     getToken,
+    getLoginDate,
 } from "./StorageService";
 
 import {
@@ -27,19 +28,6 @@ function userLogin(username, password) {
         loginForm.append('grant_type', GRAND_TYPE);
         loginForm.append('username', username);
         loginForm.append('password', password);
-
-        // const loginQuery = {
-        //     client_id: CLIENT_ID,
-        //     client_secret: CLIENT_SECRET,
-        //     grant_type: GRAND_TYPE,
-        //     username,
-        //     password,
-        // }
-
-        // const loginURL = urlBuilder(AUTH_URL, loginQuery);
-        // const loginHeaders = new Headers({
-        //     'Content-Type': 'application/x-www-form-urlencoded',
-        // })
 
         const loginHeaders = new Headers({
             'Content-Type': 'multipart/form-data',
@@ -72,7 +60,8 @@ export async function userLoginService(username, password) {
     try {
         const setTokenRes = await setToken(loginRes);
         const setUserLoginRes = await setUserLogin({ username, password });
-        if (setTokenRes && setUserLoginRes) {
+        const setLoginDate = await setLoginDate({ date: (new Date()).getTime() });
+        if (setTokenRes && setUserLoginRes && setLoginDate) {
             // const curToken = await getToken();
             return true;
         }
@@ -91,6 +80,7 @@ export async function userLogoutService() {
 export async function autoLogin() {
     const curUserLogin = await getUserLogin();
     if (curUserLogin == null) { return false; }
+    if (!isTokenExpired) { return true; }
     const { username, password } = curUserLogin;
     const loginRes = await userLoginService(username, password);
     return loginRes;
@@ -101,4 +91,11 @@ export async function isLogin() {
     const curToken = await getToken();
     if (curUserLogin !== null && curToken !== null) { return curToken; }
     return null;
+}
+
+export async function isTokenExpired() {
+    const curLoginDate = await getLoginDate();
+    const FIVEDAYS = 24 * 60 * 60 * 5;
+    const currentTS = (new Date()).toString();
+    return (currentTS - curLoginDate > FIVEDAYS);
 }

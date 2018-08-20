@@ -13,3 +13,9 @@ export const USER_STATUS = {
 export const FAKE_DATA_20 = 'https://raw.githubusercontent.com/tomoya06/react-native-douban-event/master/samples/20events.json';
 export const FAKE_DATA_00 = 'https://raw.githubusercontent.com/tomoya06/react-native-douban-event/master/samples/allevents.json';
 
+export const EVENT_LIST_BASE_URL = 'https://api.douban.com/v2/event/list';
+
+export const DEFAULT_LOCATION = {
+	id: '118281',
+	displayName: '广州'
+}

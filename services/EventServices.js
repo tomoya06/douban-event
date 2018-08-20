@@ -2,6 +2,7 @@
 
 import {
 	BASE_URL,
+	EVENT_LIST_BASE_URL,
 	FAKE_DATA_00,
 	FAKE_DATA_20,
 } from "./../utils/const";
@@ -14,6 +15,10 @@ import {
 import {
 	isLogin
 } from "./../services/UserServices";
+
+import {
+	getLocation,
+} from "./../services/StorageService";
 
 export const EVENT_DAY_TYPES = [
 	{ displayName: '所有', typeName: '' },
@@ -41,6 +46,15 @@ export const USER_STATUS = {
 	WILL: "participants",
 }
 
+async function getEventListURL() {
+	const getLocRes = await getLocation();
+	if (getLocRes) {
+		return `${EVENT_LIST_BASE_URL}?loc=${getLocRes.id}`;
+	} else {
+		return `${EVENT_LIST_BASE_URL}`;
+	}
+}
+
 export async function fetchEventDetails(id) {
 
 	let fetchOption = {};
@@ -66,10 +80,11 @@ export async function fetchEventDetails(id) {
 	})
 }
 
-export function fetchCityEvents(city, day_type = '', event_type = '', start_index = 0) {
+export async function fetchCityEvents(city, day_type = '', event_type = '', start_index = 0) {
 	// const cityPY = ConvertPinyin(city);
 	// const EVENTS_URL = `${BASE_URL}/event/list?loc=${cityPY}&day_type=${day_type}&type=${event_type}&start=${start_index}`;
-	const EVENTS_URL = start_index == 0 ? FAKE_DATA_00 : FAKE_DATA_20;
+	// const EVENTS_URL = start_index == 0 ? FAKE_DATA_00 : FAKE_DATA_20;
+	const EVENTS_URL = await getEventListURL();
 	return new Promise((resolve, reject) => {
 		console.log("fetching events from...", EVENTS_URL);
 		fetch(EVENTS_URL)

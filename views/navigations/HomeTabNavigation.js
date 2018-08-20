@@ -1,6 +1,5 @@
 import {
 	createBottomTabNavigator,
-	TabNavigator,
 } from 'react-navigation';
 
 import HomeScreen from "./../screens/HomeScreen";

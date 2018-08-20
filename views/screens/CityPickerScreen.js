@@ -203,12 +203,10 @@ class CityPickerScreen extends Component {
 	}
 
 	_navigate = async (id, displayName) => {
-		// TODO: Add Router
+		// TODO: make some noise
 		// console.log('will navigate to ', {id, displayName});
 		const setResult = await setLocation({ id, displayName });
-		console.log(setResult);
-		// const result = await getLocation();
-		// console.log(result);
+		this.props.navigation.goBack();
 	}
 
 	render() {

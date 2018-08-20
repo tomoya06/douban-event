@@ -6,6 +6,7 @@ const LOCATION_KEY = 'LOCATION';
 const TOKEN_KEY = 'ACCESS_TOKEN';
 const USER_KEY = 'USER_INFO';
 const USER_LOGIN_KEY = 'USER_LOGIN';
+const LOGIN_DATE = 'LOGIN_DATE';
 
 function setStorageFunctionFactory(KEY) {
 	return async function (data) {
@@ -70,3 +71,12 @@ export const getToken = getStorageFunctionFactory(TOKEN_KEY);
  */
 export const setUserLogin = setStorageFunctionFactory(USER_LOGIN_KEY);
 export const getUserLogin = getStorageFunctionFactory(USER_LOGIN_KEY);
+
+/**
+ * LOGIN DATE FORMAT:
+ * JSON.stringify({
+ * 		date: timestamp(dt.getTime())
+ * })
+ */
+export const setLoginDate = setStorageFunctionFactory(LOGIN_DATE);
+export const getLoginDate = getStorageFunctionFactory(LOGIN_DATE);
