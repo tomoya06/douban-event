@@ -13,33 +13,30 @@ import {
 	Title,
 } from "@shoutem/ui";
 
+/**
+ * props: 
+ * callback: function
+ * uri: background image uri
+ * content: central title
+ */
 export default class FullScaleTouchable extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			uri: this.props.uri || '',
-			content: this.props.content || '',
-			callback: this.props.callback,
-		}
 	}
 
 	render() {
 		return (
 			<TouchableOpacity
-				onPress={() => {
-					console.log('pressed');
-					this.state.callback();
-				}}
-				style={{ height: '100%', width: '100%' }}
+				onPress={this.props.callback}
+				style={{ flex: 1 }}
 			>
 				<ImageBackground
-					style={{ height: '100%', width: '100%' }}
-					source={{ uri: this.state.uri }}
+					style={{ flex: 1 }}
+					source={{ uri: this.props.uri }}
 				>
 					<Overlay styleName="fill-parent image-overlay">
-						<Title>{this.state.content}</Title>
+						<Title>{this.props.content}</Title>
 					</Overlay>
 				</ImageBackground>
 			</TouchableOpacity>

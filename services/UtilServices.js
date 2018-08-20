@@ -42,6 +42,7 @@ export function addEventToCalendar(eventDetails) {
             // These are two different identifiers on iOS.
             // On Android, where they are both equal and represent the event id, also strings.
             // when { action: 'CANCELLED' } is returned, the dialog was dismissed
+            // FIXME: cancel judge error.
             console.warn(JSON.stringify(eventInfo));
             if (eventInfo.action === 'CANCELLED') { toastMsg('Cancelled Adding Calendar Event.') }
             else { toastMsg('Event Added.') }

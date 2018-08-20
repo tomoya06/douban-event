@@ -97,7 +97,7 @@ class EventList extends React.PureComponent {
 	_onPressItem = (event) => {
 		// TODO: navigate to event detail
 		// console.log(event.title);
-		// this.props.navigation.
+		this.props.navigation.navigate('EventDetails', { id: event.id })
 	}
 
 	_renderItem = ({ item }) => {
@@ -143,7 +143,7 @@ class EventFilterScreen extends Component {
 		super(props);
 
 		this.state = {
-			locID: null,
+			locID: '',
 			locDisplayName: '',
 			day_type: EVENT_DAY_TYPES[0],
 			event_type: EVENT_TYPES[0],
@@ -185,27 +185,27 @@ class EventFilterScreen extends Component {
 
 	_fetchEventListAsync = async (loadMore = false) => {
 		this.setState({ isLoading: true });
-		try {
-			// console.log(this.state.day_type, this.state.event_type);
-			const fetchResult = await fetchCityEvents(
-				this.state.locID,
-				this.state.day_type.typeName || '',
-				this.state.event_type.typeName || '',
-				loadMore ? this.state.eventList.length : 0
-			);
-			const _newList = loadMore ? (
-				fetchResult.total < this.state.eventList.length ?
-					[...this.state.eventList, ...fetchResult.events] :
-					this.state.eventList
-			) : fetchResult.events;
-			this.setState({
-				eventList: _newList,
-			})
-		} catch (error) {
-			// error callback
-			console.log(error);
-		}
+		const [error, fetchResult] = await fetchCityEvents(
+			this.state.locID,
+			this.state.day_type.typeName || '',
+			this.state.event_type.typeName || '',
+			loadMore ? this.state.eventList.length : 0
+		);
+
 		this.setState({ isLoading: false });
+		if (error) {
+			console.warn(error);
+			return ;
+		}
+
+		const _newList = loadMore ? (
+			fetchResult.total > this.state.eventList.length ?
+				[...this.state.eventList, ...fetchResult.events] :
+				this.state.eventList
+		) : fetchResult.events;
+		this.setState({
+			eventList: _newList,
+		})
 	}
 
 	_selectDate = async (date) => {
@@ -279,6 +279,7 @@ class EventFilterScreen extends Component {
 						events={this.state.eventList}
 						isLoading={this.state.isLoading}
 						fetchEventList={this._fetchEventListAsync}
+						navigation={this.props.navigation}
 					/>
 				</Row>
 				{this._filterArea()}

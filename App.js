@@ -37,7 +37,7 @@ export default createStackNavigator({
 		screen: DemoScreen,
 	}
 }, {
-	initialRouteName: 'EventList',
+	initialRouteName: 'HomeTab',
 	navigationOptions: {
 		header: null,
 	}

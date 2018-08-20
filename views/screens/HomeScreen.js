@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 
 import {
 	View,
-	Text,
-	Button,
-	NavigationBar,
-	Title,
-	Screen,
-	Subtitle,
-	TouchableOpacity,
-	ImageBackground,
-	Overlay
+	// Text,
+	// Button,
+	// NavigationBar,
+	// Title,
+	// Screen,
+	// Subtitle,
+	// TouchableOpacity,
+	// ImageBackground,
+	// Overlay
 } from "@shoutem/ui";
 
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -23,31 +23,31 @@ import {
 
 import FullScaleTouchable from "./../components/FullScaleTouchable";
 
+import {
+	fetchCityEvents,
+} from "./../../services/EventServices";
+
+import {
+	autoLogin,
+} from "./../../services/UserServices";
+import { getLocation } from '../../services/StorageService';
+import { DEFAULT_LOCATION } from '../../utils/const';
+
+/**
+ * props:
+ * events: event list
+ * eventCallback: function(id)
+ */
 class HomeEventSlides extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			events: [],
-		}
-	}
-
-	componentDidMount() {
-		var events = fetch('https://api.douban.com/v2/event/list?loc=shanghai')
-			.then((response) => response.json())
-			.then((json) => {
-				this.setState({
-					events: json.events,
-				})
-			})
-			.catch((error) => console.log(error))
 	}
 
 	render() {
-		if (this.state.events.length === 0) {
+		if (this.props.events.length === 0) {
 			return (
-				<View style={{ height: '100%', width: '100%' }}>
+				<View style={{ flex: 1 }}>
 					<FullScaleTouchable
 						uri={'https://img3.doubanio.com/pview/event_poster/raw/public/bedeea7a97c7174.jpg'}
 						content={'豆瓣同城'}
@@ -57,13 +57,13 @@ class HomeEventSlides extends Component {
 			)
 		}
 		return (
-			<Swiper style={{ height: '100%', width: '100%' }}>
-				{this.state.events.map((event) => (
+			<Swiper style={{ flex: 1 }}>
+				{this.props.events.map((event) => (
 					<View style={{ flex: 1 }} key={event.id}>
 						<FullScaleTouchable
-							uri={event[KW_LImage]}
-							content={event[KW_Title]}
-							callback={null}
+							uri={event.image_hlarge}
+							content={event.title}
+							callback={() => this.props.eventCallback(event.id)}
 						/>
 					</View>
 				))}
@@ -74,24 +74,90 @@ class HomeEventSlides extends Component {
 
 class HomeScreen extends Component {
 
-	// TODO : change 2 cover to living image
-	// TODO : COmmon stylesheets
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			events: [],
+			isLoading: false,
+			locID: '',
+			locDisplayName: '',
+		}
+	}
+
+	_fetchEventListAsync = async () => {
+		const [error, fetchResult] = await fetchCityEvents(this.state.locID, '', '', 0);
+
+		if (error) {
+			console.warn(error);
+			return;
+		}
+
+		this.setState({ events: fetchResult.events });
+	}
+
+	_gotoEventDetails = (id) => {
+		this.props.navigation.navigate('EventDetails', { id });
+	}
+
+	_gotoEventList = () => {
+		this.props.navigation.navigate('EventList');
+	}
+
+	_getLocation = async () => {
+		const loc = await getLocation();
+		if (loc.id === this.state.locID) { return false; }
+		if (loc === null) {
+			// console.log("No location in storage. Use default Guangzhou. ");
+			this.setState({
+				locID: DEFAULT_LOCATION.id,
+				locDisplayName: DEFAULT_LOCATION.displayName,
+			})
+		} else {
+			// console.log("location: ", loc.displayName, " id: ", loc.id);
+			this.setState({
+				locID: loc.id,
+				locDisplayName: loc.displayName,
+			})
+		}
+		return true;
+	}
+
+	componentDidMount() {
+		this.willFocusListener = this.props.navigation.addListener('willFocus', async payload => {
+			const locUpdateRes = await this._getLocation();
+			if (!locUpdateRes) { return; }
+			await this._fetchEventListAsync();
+		})
+	}
+
+	componentWillUnmount() {
+		this.willFocusListener.remove();
+	}
+
+	// TODO: change 2 cover to living image
+	// TODO: add pulldown refresh
 	render() {
 		return (
 			<Grid>
 				<Row size={3}>
-					<HomeEventSlides />
+					<HomeEventSlides
+						events={this.state.events}
+						eventCallback={this._gotoEventDetails}
+					/>
 				</Row>
 				<Row size={2}>
 					<Col>
 						<FullScaleTouchable
 							uri='https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg'
-							content='Browser' />
+							content={`Browser\n@${this.state.locDisplayName}`}
+							callback={this._gotoEventList} />
 					</Col>
 					<Col>
 						<FullScaleTouchable
 							uri='https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg'
-							content={'Your\nLibrary'} />
+							content={'Your\nLibrary'}
+							callback={} />
 					</Col>
 				</Row>
 			</Grid>
