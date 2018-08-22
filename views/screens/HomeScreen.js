@@ -2,15 +2,7 @@ import React, { Component } from 'react';
 
 import {
 	View,
-	// Text,
-	// Button,
-	// NavigationBar,
-	// Title,
-	// Screen,
-	// Subtitle,
-	// TouchableOpacity,
-	// ImageBackground,
-	// Overlay
+	Icon,
 } from "@shoutem/ui";
 
 import { Col, Row, Grid } from "react-native-easy-grid";
