@@ -9,7 +9,7 @@ import {
 } from "./StorageService";
 
 import {
-    AUTH_URL,
+    AUTH_URL, ME_URL,
 } from "./../utils/const";
 
 import {
@@ -54,6 +54,40 @@ function userLogin(username, password) {
     })
 }
 
+function fetchMEinfoPromise(token) {
+    const fetchHeaders = new Headers({
+        'Content-Type': 'multipart/form-data',
+        "Authrization": 'Bearer ' + token,
+    })
+    const fetchOption = {
+        method: 'GET',
+        headers: fetchHeaders,
+    }
+    return new Promise((resolve, reject) => {
+        fetch(ME_URL, fetchOption)
+            .then((response) => {
+                if (response.ok) { return response.json(); }
+                throw new Error(response.status);
+            })
+            .then((jRes) => {
+                if (typeof jRes.msg !== 'undefined') { throw new Error(jRes.msg); }
+                return resolve([null, jRes]);
+            })
+            .catch((error) => {
+                return resolve([error, null]);
+            })
+    })
+}
+
+async function fetchMEinfoAsync() {
+    const token = await getToken();
+    const isTokenExpiredRes = await isTokenExpired();
+    if (token === null || isTokenExpiredRes) { return null; }
+    const [error, fetchRes] = fetchMEinfoPromise(token);
+    if (error) { return null; }
+    return fetchRes;
+}
+
 async function isTokenExpired() {
     const curLoginDate = await getLoginDate();
     const FIVEDAYS = 24 * 60 * 60 * 5;
@@ -61,6 +95,12 @@ async function isTokenExpired() {
     return (currentTS - curLoginDate > FIVEDAYS);
 }
 
+/**
+ * login, store token service.
+ * return true if everything goes right, otherwise return false.
+ * @param {string} username username
+ * @param {string} password password
+ */
 export async function userLoginService(username, password) {
     const [loginError, loginRes] = await userLogin(username, password);
     if (loginError) { return false; }
@@ -84,6 +124,10 @@ export async function userLogoutService() {
     return (logoutUserRes && logoutTokenRes);
 }
 
+/**
+ * if it can log in, return true,
+ *      else return false.
+ */
 export async function autoLogin() {
     const curUserLogin = await getUserLogin();
     if (curUserLogin == null) { return false; }
@@ -93,9 +137,21 @@ export async function autoLogin() {
     return loginRes;
 }
 
-export async function isLogin() {
+async function isLogin() {
     const curUserLogin = await getUserLogin();
     const curToken = await getToken();
     if (curUserLogin !== null && curToken !== null) { return curToken; }
     return null;
+}
+
+/**
+ * fetch current login user's infomation with ME url
+ * if has someone login, return his/her info.
+ *      else return null.
+ */
+export async function fetchMeInfoService() {
+    const isLoginRes = await isLogin();
+    if (!isLoginRes) { return null; }
+    const fetchMEinfoRes = await fetchMEinfoAsync();
+    return fetchMEinfoRes;
 }

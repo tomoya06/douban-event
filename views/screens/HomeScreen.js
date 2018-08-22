@@ -152,13 +152,13 @@ class HomeScreen extends Component {
 					<Col>
 						<FullScaleTouchable
 							uri='https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg'
-							content={<Tile><Title>Browser</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></Tile>}
+							content={<Tile styleName="clear"><Title>Browser</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></Tile>}
 							callback={this._gotoEventList} />
 					</Col>
 					<Col>
 						<FullScaleTouchable
 							uri='https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg'
-							content={<Tile><Title>Your</Title><Title>Library</Title></Tile>}
+							content={<Tile styleName="clear"><Title>Your</Title><Title>Library</Title></Tile>}
 							callback={null} />
 					</Col>
 				</Row>
