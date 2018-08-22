@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import {
 	View,
 	Icon,
+	Tile,
+	Subtitle,
 } from "@shoutem/ui";
 
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -149,13 +151,13 @@ class HomeScreen extends Component {
 					<Col>
 						<FullScaleTouchable
 							uri='https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg'
-							content={`Browser\n@${this.state.locDisplayName}`}
+							content={<Tile><Title>Browser</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></Tile>}
 							callback={this._gotoEventList} />
 					</Col>
 					<Col>
 						<FullScaleTouchable
 							uri='https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg'
-							content={'Your\nLibrary'}
+							content={<Tile><Title>Your</Title><Title>Library</Title></Tile>}
 							callback={null} />
 					</Col>
 				</Row>

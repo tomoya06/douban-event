@@ -54,6 +54,13 @@ function userLogin(username, password) {
     })
 }
 
+async function isTokenExpired() {
+    const curLoginDate = await getLoginDate();
+    const FIVEDAYS = 24 * 60 * 60 * 5;
+    const currentTS = (new Date()).toString();
+    return (currentTS - curLoginDate > FIVEDAYS);
+}
+
 export async function userLoginService(username, password) {
     const [loginError, loginRes] = await userLogin(username, password);
     if (loginError) { return false; }
@@ -91,11 +98,4 @@ export async function isLogin() {
     const curToken = await getToken();
     if (curUserLogin !== null && curToken !== null) { return curToken; }
     return null;
-}
-
-export async function isTokenExpired() {
-    const curLoginDate = await getLoginDate();
-    const FIVEDAYS = 24 * 60 * 60 * 5;
-    const currentTS = (new Date()).toString();
-    return (currentTS - curLoginDate > FIVEDAYS);
 }

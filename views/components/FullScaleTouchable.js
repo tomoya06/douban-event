@@ -36,7 +36,7 @@ export default class FullScaleTouchable extends Component {
 					source={{ uri: this.props.uri }}
 				>
 					<Overlay styleName="fill-parent image-overlay">
-						<Title>{this.props.content}</Title>
+						{this.props.content}
 					</Overlay>
 				</ImageBackground>
 			</TouchableOpacity>

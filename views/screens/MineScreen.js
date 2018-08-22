@@ -17,6 +17,8 @@ class MineScreen extends Component {
 		)
 	}
 
+	
+
 	render() {
 		return (
 			<View styleName="fill-parent">
