@@ -4,6 +4,7 @@ import {
 	View,
 	Icon,
 	Tile,
+	Title,
 	Subtitle,
 } from "@shoutem/ui";
 
