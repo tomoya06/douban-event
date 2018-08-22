@@ -111,13 +111,13 @@ class HomeScreen extends Component {
 		if (loc.id === this.state.locID) { return false; }
 		if (loc === null) {
 			// console.log("No location in storage. Use default Guangzhou. ");
-			this.setState({
+			await this.setState({
 				locID: DEFAULT_LOCATION.id,
 				locDisplayName: DEFAULT_LOCATION.displayName,
 			})
 		} else {
 			// console.log("location: ", loc.displayName, " id: ", loc.id);
-			this.setState({
+			await this.setState({
 				locID: loc.id,
 				locDisplayName: loc.displayName,
 			})

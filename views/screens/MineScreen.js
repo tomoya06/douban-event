@@ -11,7 +11,6 @@ import {
 	Subtitle,
 } from "@shoutem/ui";
 
-import { StackNavigator } from "react-navigation";
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import FullScaleTouchable from '../components/FullScaleTouchable';
 import { fetchMeInfoService } from '../../services/UserServices';
@@ -45,7 +44,7 @@ class MineScreen extends Component {
 			<Tile styleName="clear">
 				<Image
 					styleName="medium-avatar"
-					source={{ uri: './../../src/conversation.png' }}
+					source={{ uri: './../../src/img/conversation.png' }}
 				/>
 				<Title>Log In For More Fun</Title>
 			</Tile>
