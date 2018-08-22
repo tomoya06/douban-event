@@ -45,7 +45,7 @@ class HomeEventSlides extends Component {
 				<View style={{ flex: 1 }}>
 					<FullScaleTouchable
 						uri={'https://img3.doubanio.com/pview/event_poster/raw/public/bedeea7a97c7174.jpg'}
-						content={'豆瓣同城'}
+						content={<Title>豆瓣同城</Title>}
 						callback={null}
 					/>
 				</View>
@@ -57,7 +57,7 @@ class HomeEventSlides extends Component {
 					<View style={{ flex: 1 }} key={event.id}>
 						<FullScaleTouchable
 							uri={event.image_hlarge}
-							content={event.title}
+							content={<Title>{event.title}</Title>}
 							callback={() => this.props.eventCallback(event.id)}
 						/>
 					</View>
