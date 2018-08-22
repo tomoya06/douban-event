@@ -66,6 +66,13 @@ class HomeEventSlides extends Component {
 
 class HomeScreen extends Component {
 
+	static navigationOptions = {
+		tabBarLabel: 'Home',
+		tabBarIcon: ({ tintColor }) => (
+			<Icon name="home" style={{ color: tintColor }} />
+		)
+	}
+
 	constructor(props) {
 		super(props);
 
@@ -149,7 +156,7 @@ class HomeScreen extends Component {
 						<FullScaleTouchable
 							uri='https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg'
 							content={'Your\nLibrary'}
-							callback={} />
+							callback={null} />
 					</Col>
 				</Row>
 			</Grid>
