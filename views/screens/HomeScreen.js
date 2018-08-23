@@ -44,7 +44,11 @@ class HomeEventSlides extends Component {
 			return (
 				<View style={{ flex: 1 }}>
 					<FullScaleTouchable
+<<<<<<< HEAD
 						source={{ uri: 'https://img3.doubanio.com/pview/event_poster/raw/public/bedeea7a97c7174.jpg' }}
+=======
+						uri={'https://img3.doubanio.com/pview/event_poster/raw/public/bedeea7a97c7174.jpg'}
+>>>>>>> df3c1cb79524ac5dc99e31711597c5ddab9d66be
 						content={<Title>豆瓣同城</Title>}
 						callback={null}
 					/>
@@ -56,7 +60,11 @@ class HomeEventSlides extends Component {
 				{this.props.events.map((event) => (
 					<View style={{ flex: 1 }} key={event.id}>
 						<FullScaleTouchable
+<<<<<<< HEAD
 							source={{ uri: event.image_hlarge }}
+=======
+							uri={event.image_hlarge}
+>>>>>>> df3c1cb79524ac5dc99e31711597c5ddab9d66be
 							content={<Title>{event.title}</Title>}
 							callback={() => this.props.eventCallback(event.id)}
 						/>
@@ -151,14 +159,24 @@ class HomeScreen extends Component {
 				<Row size={2}>
 					<Col>
 						<FullScaleTouchable
+<<<<<<< HEAD
 							source={{ uri: 'https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg' }}
 							content={<View styleName="clear vertical h-center"><Title>Browser</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></View>}
+=======
+							uri='https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg'
+							content={<Tile styleName="clear"><Title>Browser</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></Tile>}
+>>>>>>> df3c1cb79524ac5dc99e31711597c5ddab9d66be
 							callback={this._gotoEventList} />
 					</Col>
 					<Col>
 						<FullScaleTouchable
+<<<<<<< HEAD
 							source={{ uri: 'https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg' }}
 							content={<View styleName="clear vertical h-center"><Title>Your</Title><Title>Library</Title></View>}
+=======
+							uri='https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg'
+							content={<Tile styleName="clear"><Title>Your</Title><Title>Library</Title></Tile>}
+>>>>>>> df3c1cb79524ac5dc99e31711597c5ddab9d66be
 							callback={null} />
 					</Col>
 				</Row>

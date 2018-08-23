@@ -35,7 +35,11 @@ export default class FullScaleTouchable extends Component {
 					style={{ flex: 1 }}
 					source={this.props.source}
 				>
+<<<<<<< HEAD
 					<Overlay styleName="fill-parent image-overlay h-center">
+=======
+					<Overlay styleName="fill-parent image-overlay">
+>>>>>>> df3c1cb79524ac5dc99e31711597c5ddab9d66be
 						{this.props.content}
 					</Overlay>
 				</ImageBackground>
