@@ -137,7 +137,7 @@ export async function autoLogin() {
     return loginRes;
 }
 
-async function isLogin() {
+export async function isLogin() {
     const curUserLogin = await getUserLogin();
     const curToken = await getToken();
     if (curUserLogin !== null && curToken !== null) { return curToken; }
@@ -150,8 +150,6 @@ async function isLogin() {
  *      else return null.
  */
 export async function fetchMeInfoService() {
-    const isLoginRes = await isLogin();
-    if (!isLoginRes) { return null; }
     const fetchMEinfoRes = await fetchMEinfoAsync();
     return fetchMEinfoRes;
 }

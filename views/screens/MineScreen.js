@@ -75,7 +75,7 @@ class MineScreen extends Component {
 					<Row size={1}>
 						<FullScaleTouchable
 							callback={null}
-							source={require('./../../src/img/black.jpg') }
+							source={require('./../../src/img/black.jpg')}
 							content={this._blankAvatar()}
 						/>
 					</Row>
