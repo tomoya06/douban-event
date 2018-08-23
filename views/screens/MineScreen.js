@@ -41,7 +41,6 @@ class MineScreen extends Component {
 	_blankAvatar = () => {
 		const info = this.state.userMEinfo;
 		return (
-<<<<<<< HEAD
 			<View styleName="clear vertical h-center">
 				<Image
 					styleName="small"
@@ -50,15 +49,6 @@ class MineScreen extends Component {
 				<View styleName="md-gutter-bottom"></View>
 				<Title>Log In For More Fun</Title>
 			</View>
-=======
-			<Tile styleName="clear">
-				<Image
-					styleName="medium-avatar"
-					source={{ uri: './../../src/img/conversation.png' }}
-				/>
-				<Title>Log In For More Fun</Title>
-			</Tile>
->>>>>>> df3c1cb79524ac5dc99e31711597c5ddab9d66be
 		)
 	}
 
