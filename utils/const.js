@@ -1,5 +1,6 @@
 export const BASE_URL = 'https://api.douban.com/v2';
 export const AUTH_URL = 'https://www.douban.com/service/auth2/token';
+export const ME_URL = 'https://api.douban.com/v2/user/~me';
 
 export const USER_STATUS = {
     wish: 'wishers',

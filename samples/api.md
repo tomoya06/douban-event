@@ -56,3 +56,31 @@ https://api.douban.com/v2/event/29821951/wishers DELETE 取消活动感兴趣
 https://api.douban.com/v2/event/29821951/participants POST 添加活动要参加
 https://api.douban.com/v2/event/29821951/participants DELETE 取消活动要参加
 
+// 查看授权用户信息
+https://api.douban.com/v2/user/~me
+// 未授权时：即不带token或token失效
+{
+    "msg": "need_permission",
+    "code": 1000,
+    "request": "GET /v2/user/~me"
+}
+
+// 已授权:
+{
+    "loc_id": "118288",
+    "name": "tomoya06",
+    "created": "2013-03-16 12:39:18",
+    "is_banned": false,
+    "is_suicide": false,
+    "loc_name": "广东湛江",
+    "avatar": "https://img3.doubanio.com/icon/u70225597-6.jpg",
+    "signature": "我是签名档",
+    "uid": "70225597",
+    "alt": "https://www.douban.com/people/70225597/",
+    "desc": "打分偏高，仅短期内有效 / 一个没有上进心的男子 / 短暫感官衝擊 / @Nanfang Rd. Studio ",
+    "type": "user",
+    "id": "70225597",
+    "large_avatar": "https://img3.doubanio.com/icon/up70225597-6.jpg"
+}
+
+

@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import {
 	View,
 	Icon,
+	Tile,
+	Title,
+	Subtitle,
 } from "@shoutem/ui";
 
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -41,8 +44,8 @@ class HomeEventSlides extends Component {
 			return (
 				<View style={{ flex: 1 }}>
 					<FullScaleTouchable
-						uri={'https://img3.doubanio.com/pview/event_poster/raw/public/bedeea7a97c7174.jpg'}
-						content={'豆瓣同城'}
+						source={{ uri: 'https://img3.doubanio.com/pview/event_poster/raw/public/bedeea7a97c7174.jpg' }}
+						content={<Title>豆瓣同城</Title>}
 						callback={null}
 					/>
 				</View>
@@ -53,8 +56,8 @@ class HomeEventSlides extends Component {
 				{this.props.events.map((event) => (
 					<View style={{ flex: 1 }} key={event.id}>
 						<FullScaleTouchable
-							uri={event.image_hlarge}
-							content={event.title}
+							source={{ uri: event.image_hlarge }}
+							content={<Title>{event.title}</Title>}
 							callback={() => this.props.eventCallback(event.id)}
 						/>
 					</View>
@@ -108,13 +111,13 @@ class HomeScreen extends Component {
 		if (loc.id === this.state.locID) { return false; }
 		if (loc === null) {
 			// console.log("No location in storage. Use default Guangzhou. ");
-			this.setState({
+			await this.setState({
 				locID: DEFAULT_LOCATION.id,
 				locDisplayName: DEFAULT_LOCATION.displayName,
 			})
 		} else {
 			// console.log("location: ", loc.displayName, " id: ", loc.id);
-			this.setState({
+			await this.setState({
 				locID: loc.id,
 				locDisplayName: loc.displayName,
 			})
@@ -148,14 +151,14 @@ class HomeScreen extends Component {
 				<Row size={2}>
 					<Col>
 						<FullScaleTouchable
-							uri='https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg'
-							content={`Browser\n@${this.state.locDisplayName}`}
+							source={{ uri: 'https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg' }}
+							content={<View styleName="clear vertical h-center"><Title>Browser</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></View>}
 							callback={this._gotoEventList} />
 					</Col>
 					<Col>
 						<FullScaleTouchable
-							uri='https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg'
-							content={'Your\nLibrary'}
+							source={{ uri: 'https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg' }}
+							content={<View styleName="clear vertical h-center"><Title>Your</Title><Title>Library</Title></View>}
 							callback={null} />
 					</Col>
 				</Row>

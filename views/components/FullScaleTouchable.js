@@ -16,7 +16,7 @@ import {
 /**
  * props: 
  * callback: function
- * uri: background image uri
+ * source: background image source
  * content: central title
  */
 export default class FullScaleTouchable extends Component {
@@ -33,10 +33,10 @@ export default class FullScaleTouchable extends Component {
 			>
 				<ImageBackground
 					style={{ flex: 1 }}
-					source={{ uri: this.props.uri }}
+					source={this.props.source}
 				>
-					<Overlay styleName="fill-parent image-overlay">
-						<Title>{this.props.content}</Title>
+					<Overlay styleName="fill-parent image-overlay h-center">
+						{this.props.content}
 					</Overlay>
 				</ImageBackground>
 			</TouchableOpacity>
