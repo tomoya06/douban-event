@@ -51,6 +51,7 @@ class EventItem extends React.PureComponent {
     }
 }
 
+// FIXME: list content not horizontal center. right margin exists but no left margin
 /**
  * props:
  * onPressItem: function()

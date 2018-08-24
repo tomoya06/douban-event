@@ -35,6 +35,12 @@ export default createStackNavigator({
 	},
 	Demo: {
 		screen: DemoScreen,
+	},
+	MyCollections: {
+		screen: MyCollectionsScreen,
+	},
+	Setting: {
+		screen: SettingScreen,
 	}
 }, {
 	initialRouteName: 'HomeTab',
