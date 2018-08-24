@@ -56,15 +56,15 @@ function userLogin(username, password) {
 }
 
 function fetchMEinfoPromise(token) {
-    const fetchHeaders = new Headers({
-        'Content-Type': 'multipart/form-data',
-        "Authrization": 'Bearer ' + token,
-    })
-    const fetchOption = {
-        method: 'GET',
-        headers: fetchHeaders,
-    }
     return new Promise((resolve, reject) => {
+        const fetchHeaders = new Headers({
+            'Content-Type': 'multipart/form-data',
+            "Authrization": 'Bearer ' + token,
+        })
+        const fetchOption = {
+            method: 'GET',
+            headers: fetchHeaders,
+        }
         fetch(ME_URL, fetchOption)
             .then((response) => {
                 if (response.ok) { return response.json(); }
