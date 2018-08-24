@@ -74,7 +74,7 @@ class CollectionItem extends PureComponent {
                         source={{ uri: event.image }}
                     />
                     <View styleName="content">
-                        <Subtitle ellipsizeMode="tail" numberOfLines={2}>{event.title}</Subtitle>
+                        <Subtitle ellipsizeMode="tail" numberOfLines={1}>{event.title}</Subtitle>
                         <Caption ellipsizeMode="tail" numberOfLines={1}>{event.time_str}</Caption>
                     </View>
                 </Card>
@@ -117,11 +117,12 @@ class EventList extends PureComponent {
     }
 
     _itemSeparatorComponent = () => {
-        if (this.props.grid) {
-            return (<View></View>)
-        } else {
-            return (<Divider styleName="section-header" />)
-        }
+        // if (this.props.grid) {
+        //     return (<View></View>)
+        // } else {
+        //     return (<Divider styleName="section-header" />)
+        // }
+        return (<Divider styleName="section-header" />);
     }
 
     _keyExtrator = (item) => {
