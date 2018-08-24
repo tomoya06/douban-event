@@ -86,7 +86,7 @@ async function fetchMEinfoAsync() {
     const token = await getToken();
     const isTokenExpiredRes = await isTokenExpired();
     if (token === null || isTokenExpiredRes) { return null; }
-    const [error, fetchRes] = await fetchMEinfoPromise(token);
+    const [error, fetchRes] = await fetchMEinfoPromise(token.access_token);
     if (error) { return null; }
     return fetchRes;
 }
