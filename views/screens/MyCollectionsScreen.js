@@ -22,6 +22,7 @@ import {
 	Row,
 } from "react-native-easy-grid";
 
+import EventList from "./../components/EventList";
 
 import { COLLECTION_TYPE } from '../../utils/const';
 import { getCollections } from '../../services/CollectionService';
@@ -65,12 +66,19 @@ export class MyCollectionsScreen extends Component {
 			user_id: '',
 			collection_type: '',
 			collections: null,
+			isLoading: false,
 		};
 	}
 
 	_fetchCollections = async () => {
+		this.setState({ isLoading: true });
 		const collections = await getCollections(this.state.user_id, COLLECTION_TYPE[this.state.collection_type]);
-		this.setState({ collections });
+		// TODO: load more or reload
+		this.setState({ collections, isLoading: false });
+	}
+
+	_itemCallback = (id) => {
+		this.props.navigation.navigate("EventDetails", { id });
 	}
 
 	async componentDidMount() {
@@ -90,7 +98,13 @@ export class MyCollectionsScreen extends Component {
 					/>
 				</Row>
 				<Row>
-
+					<EventList
+						events={this.state.collections}
+						isLoading={this.state.isLoading}
+						fetchEventList={this._fetchCollections}
+						callback={this._itemCallback}
+						grid={true}
+					/>
 				</Row>
 			</Grid>
 		);
