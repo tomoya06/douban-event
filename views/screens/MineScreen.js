@@ -64,14 +64,16 @@ class MineScreen extends Component {
 	_loginAvatar = () => {
 		const info = this.state.userMEinfo;
 		return (
-			<Tile styleName="clear">
+			<View styleName="clear vertical h-center">
 				<Image
 					styleName="medium-avatar"
 					source={{ uri: info.large_avatar }}
 				/>
+				<View styleName="md-gutter-bottom"></View>
 				<Title>{info.name}</Title>
+				<View styleName="sm-gutter-bottom"></View>
 				<Subtitle>{info.desc}</Subtitle>
-			</Tile>
+			</View>
 		)
 	}
 
@@ -91,6 +93,7 @@ class MineScreen extends Component {
 				</Grid>
 			)
 		} else {
+			// TODO: add two photos as background
 			return (
 				<Grid>
 					<Row size={3}>
