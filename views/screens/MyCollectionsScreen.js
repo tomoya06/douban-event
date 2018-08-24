@@ -54,7 +54,7 @@ import { getCollections } from '../../services/CollectionService';
 // 	}
 // }
 
-export class MyCollectionsScreen extends Component {
+export default class MyCollectionsScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
