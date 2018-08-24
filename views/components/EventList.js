@@ -69,18 +69,19 @@ class CollectionItem extends PureComponent {
                 onPress={this._onPress}
                 styleName="flexible"
             >
+            <View styleName="horizontal">
+                <View styleName="sm-gutter-left"></View>
                 <Card styleName="flexible">
-                <View styleName="flexible vertical h-center">
                     <Image
                         styleName="medium-wide"
                         source={{ uri: event.image }}
                     />
-                    <View styleName="content h-start">
+                    <View styleName="content">
                         <Subtitle ellipsizeMode="tail" numberOfLines={1}>{event.title}</Subtitle>
                         <Caption ellipsizeMode="tail" numberOfLines={1}>{event.time_str}</Caption>
                     </View>
-                </View>
                 </Card>
+            </View>
             </TouchableOpacity>
         )
     }
@@ -98,7 +99,7 @@ class EventList extends PureComponent {
 
     _onPressItem = (event) => {
         // console.log(event.title);
-       this.props.callback(event.id);
+        this.props.callback(event.id);
     }
 
     _renderItem = ({ item }) => {
