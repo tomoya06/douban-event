@@ -69,15 +69,17 @@ class CollectionItem extends PureComponent {
                 onPress={this._onPress}
                 styleName="flexible"
             >
-                <Card>
+                <Card styleName="flexible">
+                <View styleName="flexible vertical h-center">
                     <Image
                         styleName="medium-wide"
                         source={{ uri: event.image }}
                     />
-                    <View styleName="content">
+                    <View styleName="content h-start">
                         <Subtitle ellipsizeMode="tail" numberOfLines={1}>{event.title}</Subtitle>
                         <Caption ellipsizeMode="tail" numberOfLines={1}>{event.time_str}</Caption>
                     </View>
+                </View>
                 </Card>
             </TouchableOpacity>
         )
