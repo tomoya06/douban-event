@@ -4,13 +4,8 @@ import React, {
 } from 'react';
 
 import {
-	View,
 	Title,
 	NavigationBar,
-	TouchableOpacity,
-	Card,
-	Subtitle,
-	Caption,
 } from "@shoutem/ui";
 
 import {

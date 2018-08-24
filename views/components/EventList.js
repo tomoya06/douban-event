@@ -8,6 +8,8 @@ import {
     Caption,
     Subtitle,
     Divider,
+    Card,
+    Image,
 } from "@shoutem/ui";
 
 import {
