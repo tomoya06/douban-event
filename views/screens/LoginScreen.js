@@ -18,6 +18,7 @@ import {
 import {
 	userLoginService,
 } from "./../../services/UserServices";
+import { toastMsg } from '../../services/UtilServices';
 
 class LoginScreen extends Component {
 
@@ -32,23 +33,11 @@ class LoginScreen extends Component {
 	}
 
 	_inputMissingAlert = () => {
-		const title = 'oops...';
-		const msg = 'Something is missing.';
-		const cancel_btn = {
-			text: 'AH HA',
-			style: 'Cancel'
-		}
-		Alert.alert(title, msg, [cancel_btn]);
+		toastMsg("Oops...Something is missing.");
 	}
 
 	_loginFailAlert = () => {
-		const title = 'oops...';
-		const msg = 'Fail to login. Try again please.';
-		const cancel_btn = {
-			text: 'ALRIGHT',
-			style: 'Cancel'
-		}
-		Alert.alert(title, msg, [cancel_btn]);
+		toastMsg("Oops...please try again later.");
 	}
 
 	_submitLogin = async () => {
@@ -63,7 +52,6 @@ class LoginScreen extends Component {
 				this._loginFailAlert();
 				throw new Error('login fail');
 			}
-			// navigate to previous page...
 			console.log('login success');
 			this.setState({ isLoginSuccess: true });
 			this.props.navigation.goBack();

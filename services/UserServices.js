@@ -5,6 +5,7 @@ import {
     getUserLogin,
     setToken,
     getToken,
+    setLoginDate,
     getLoginDate,
 } from "./StorageService";
 
@@ -70,6 +71,7 @@ function fetchMEinfoPromise(token) {
                 throw new Error(response.status);
             })
             .then((jRes) => {
+                console.log(jRes);
                 if (typeof jRes.msg !== 'undefined') { throw new Error(jRes.msg); }
                 return resolve([null, jRes]);
             })
@@ -83,7 +85,7 @@ async function fetchMEinfoAsync() {
     const token = await getToken();
     const isTokenExpiredRes = await isTokenExpired();
     if (token === null || isTokenExpiredRes) { return null; }
-    const [error, fetchRes] = fetchMEinfoPromise(token);
+    const [error, fetchRes] = await fetchMEinfoPromise(token);
     if (error) { return null; }
     return fetchRes;
 }
@@ -92,7 +94,7 @@ async function isTokenExpired() {
     const curLoginDate = await getLoginDate();
     const FIVEDAYS = 24 * 60 * 60 * 5;
     const currentTS = (new Date()).toString();
-    return (currentTS - curLoginDate > FIVEDAYS);
+    return (currentTS - curLoginDate.date > FIVEDAYS);
 }
 
 /**
@@ -103,12 +105,17 @@ async function isTokenExpired() {
  */
 export async function userLoginService(username, password) {
     const [loginError, loginRes] = await userLogin(username, password);
-    if (loginError) { return false; }
+    if (loginError) { 
+        return false; 
+    }
     try {
         const setTokenRes = await setToken(loginRes);
         const setUserLoginRes = await setUserLogin({ username, password });
-        const setLoginDate = await setLoginDate({ date: (new Date()).getTime() });
-        if (setTokenRes && setUserLoginRes && setLoginDate) {
+        const setLoginDateRes = await setLoginDate({ date: (new Date()).getTime() });
+
+        console.log(setTokenRes, setUserLoginRes, setLoginDateRes);
+        
+        if (setTokenRes && setUserLoginRes && setLoginDateRes) {
             // const curToken = await getToken();
             return true;
         }
@@ -121,7 +128,8 @@ export async function userLoginService(username, password) {
 export async function userLogoutService() {
     const logoutUserRes = await setUserLogin(null);
     const logoutTokenRes = await setToken(null);
-    return (logoutUserRes && logoutTokenRes);
+    const logoutDateRes = await setLoginDate(null);
+    return (logoutUserRes && logoutTokenRes && logoutDateRes);
 }
 
 /**

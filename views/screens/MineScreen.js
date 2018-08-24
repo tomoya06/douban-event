@@ -31,11 +31,20 @@ class MineScreen extends Component {
 		}
 	}
 
-	async componentDidMount() {
+	_willFocusHandler = async () => {
 		const MEinfoRes = await fetchMeInfoService();
-		this.setState({
+		console.log(MEinfoRes);
+		await this.setState({
 			userMEinfo: MEinfoRes,
 		})
+	}
+
+	componentDidMount() {
+		this.willFocusListener = this.props.navigation.addListener('willFocus', this._willFocusHandler);
+	}
+
+	componentWillUnmount() {
+		this.willFocusListener.remove();
 	}
 
 	_blankAvatar = () => {
@@ -74,7 +83,7 @@ class MineScreen extends Component {
 				<Grid>
 					<Row size={1}>
 						<FullScaleTouchable
-							callback={null}
+							callback={() => this.props.navigation.navigate('Login')}
 							source={require('./../../src/img/black.jpg')}
 							content={this._blankAvatar()}
 						/>
