@@ -122,7 +122,8 @@ class EventList extends PureComponent {
         // } else {
         //     return (<Divider styleName="section-header" />)
         // }
-        return (<Divider styleName="section-header" />);
+        // return (<Divider styleName="section-header" />);
+        return (<View styleName="md-gutter-bottom"></View>)
     }
 
     _keyExtrator = (item) => {
