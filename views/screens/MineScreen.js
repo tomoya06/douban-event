@@ -13,7 +13,7 @@ import {
 
 import { Grid, Row, Col } from 'react-native-easy-grid';
 import FullScaleTouchable from '../components/FullScaleTouchable';
-import { fetchMeInfoService } from '../../services/UserServices';
+import { fetchMeInfoService, fetchMEinfoAsync } from '../../services/UserServices';
 
 class MineScreen extends Component {
 	static navigationOptions = {
@@ -32,8 +32,8 @@ class MineScreen extends Component {
 	}
 
 	_willFocusHandler = async () => {
-		const MEinfoRes = await fetchMeInfoService();
-		console.log(MEinfoRes);
+		const MEinfoRes = await fetchMEinfoAsync();
+		console.log("mine info:", MEinfoRes);
 		await this.setState({
 			userMEinfo: MEinfoRes,
 		})

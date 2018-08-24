@@ -58,8 +58,8 @@ function userLogin(username, password) {
 function fetchMEinfoPromise(token) {
     return new Promise((resolve, reject) => {
         const fetchHeaders = new Headers({
-            'Content-Type': 'multipart/form-data',
-            "Authrization": 'Bearer ' + token,
+            'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": 'Bearer ' + token,
         })
         const fetchOption = {
             method: 'GET',
@@ -82,20 +82,20 @@ function fetchMEinfoPromise(token) {
     })
 }
 
-async function fetchMEinfoAsync() {
-    const token = await getToken();
-    const isTokenExpiredRes = await isTokenExpired();
-    if (token === null || isTokenExpiredRes) { return null; }
-    const [error, fetchRes] = await fetchMEinfoPromise(token);
-    if (error) { return null; }
-    return fetchRes;
-}
-
 async function isTokenExpired() {
     const curLoginDate = await getLoginDate();
     const FIVEDAYS = 24 * 60 * 60 * 5;
     const currentTS = (new Date()).toString();
     return (currentTS - curLoginDate.date > FIVEDAYS);
+}
+
+export async function fetchMEinfoAsync() {
+    const token = await getToken();
+    const isTokenExpiredRes = await isTokenExpired();
+    if (token === null || isTokenExpiredRes) { return null; }
+    const [error, fetchRes] = await fetchMEinfoPromise(token.access_token);
+    if (error) { return null; }
+    return fetchRes;
 }
 
 /**
@@ -106,8 +106,8 @@ async function isTokenExpired() {
  */
 export async function userLoginService(username, password) {
     const [loginError, loginRes] = await userLogin(username, password);
-    if (loginError) { 
-        return false; 
+    if (loginError) {
+        return false;
     }
     try {
         const setTokenRes = await setToken(loginRes);
@@ -115,7 +115,7 @@ export async function userLoginService(username, password) {
         const setLoginDateRes = await setLoginDate({ date: (new Date()).getTime() });
 
         console.log(setTokenRes, setUserLoginRes, setLoginDateRes);
-        
+
         if (setTokenRes && setUserLoginRes && setLoginDateRes) {
             // const curToken = await getToken();
             return true;
@@ -158,7 +158,7 @@ export async function isLogin() {
  * if has someone login, return his/her info.
  *      else return null.
  */
-export async function fetchMeInfoService() {
-    const fetchMEinfoRes = await fetchMEinfoAsync();
-    return fetchMEinfoRes;
-}
+// export async function fetchMeInfoService() {
+//     const fetchMEinfoRes = await fetchMEinfoAsync();
+//     return fetchMEinfoRes;
+// }
