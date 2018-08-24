@@ -82,6 +82,15 @@ function fetchMEinfoPromise(token) {
     })
 }
 
+async function fetchMEinfoAsync() {
+    const token = await getToken();
+    const isTokenExpiredRes = await isTokenExpired();
+    if (token === null || isTokenExpiredRes) { return null; }
+    const [error, fetchRes] = await fetchMEinfoPromise(token.access_token);
+    if (error) { return null; }
+    return fetchRes;
+}
+
 async function isTokenExpired() {
     const curLoginDate = await getLoginDate();
     const FIVEDAYS = 24 * 60 * 60 * 5;
