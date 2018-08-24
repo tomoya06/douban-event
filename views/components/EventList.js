@@ -69,9 +69,9 @@ class CollectionItem extends PureComponent {
                 onPress={this._onPress}
                 styleName="flexible"
             >
-            <View styleName="horizontal">
+            <View styleName="horizontal flexible">
                 <View styleName="sm-gutter-left"></View>
-                <Card styleName="flexible">
+                <Card styleName="fill-parent">
                     <Image
                         styleName="medium-wide"
                         source={{ uri: event.image }}
