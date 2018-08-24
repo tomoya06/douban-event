@@ -67,6 +67,7 @@ function fetchMEinfoPromise(token) {
         }
         fetch(ME_URL, fetchOption)
             .then((response) => {
+                console.log(response);
                 if (response.ok) { return response.json(); }
                 throw new Error(response.status);
             })
