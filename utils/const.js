@@ -20,3 +20,8 @@ export const DEFAULT_LOCATION = {
 	id: '118281',
 	displayName: '广州'
 }
+
+export const COLLECTION_TYPE = {
+    wish: 'user_wished',
+    in: 'user_participated',
+}

@@ -323,6 +323,7 @@ class EventDetails extends Component {
 	}
 
 	async componentDidMount() {
+		// getParam(key, default_value)
 		const paramID = this.props.navigation.getParam('id', null);
 		if (paramID === null) {
 			await this.setState({ eventID: '30023544' });

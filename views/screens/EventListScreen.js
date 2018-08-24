@@ -28,7 +28,8 @@ import {
 	Col,
 } from "react-native-easy-grid";
 
-import GoBackButton from './../components/GoBackButton'
+import GoBackButton from './../components/GoBackButton';
+import EventList from "./../components/EventList";
 
 import {
 	getLocation,
@@ -52,90 +53,86 @@ const styles = StyleSheet.create({
  * event: event object {title, time_str, image_hlarge, category_name, id}
  * onPress: function
  */
-class EventItem extends React.PureComponent {
+// class EventItem extends React.PureComponent {
 
-	_onPress = () => {
-		this.props.onPressItem(this.props.event);
-	}
+// 	_onPress = () => {
+// 		this.props.onPressItem(this.props.event);
+// 	}
 
-	render() {
-		return (
-			<TouchableOpacity
-				onPress={this._onPress}
-			>
-				<ImageBackground
-					styleName="large-ultra-wide"
-					source={{ uri: this.props.event.image_hlarge }}
-				>
-				</ImageBackground>
-				<View styleName="content md-gutter">
-					<Title>{this.props.event.title}</Title>
-					<View styleName="horizontal space-between sm-gutter-top">
-						<Caption>{this.props.event.category_name}</Caption>
-						<Caption>    </Caption>
-						<Caption>{this.props.event.time_str}</Caption>
-					</View>
-				</View>
-			</TouchableOpacity>
-		);
-	}
-}
+// 	render() {
+// 		return (
+// 			<TouchableOpacity
+// 				onPress={this._onPress}
+// 			>
+// 				<ImageBackground
+// 					styleName="large-ultra-wide"
+// 					source={{ uri: this.props.event.image_hlarge }}
+// 				>
+// 				</ImageBackground>
+// 				<View styleName="content md-gutter">
+// 					<Title>{this.props.event.title}</Title>
+// 					<View styleName="horizontal space-between sm-gutter-top">
+// 						<Caption>{this.props.event.category_name}</Caption>
+// 						<Caption>    </Caption>
+// 						<Caption>{this.props.event.time_str}</Caption>
+// 					</View>
+// 				</View>
+// 			</TouchableOpacity>
+// 		);
+// 	}
+// }
 
-/**
- * props:
- * events: events
- * isLoading: for flatlist to show loading
- * fetchEventList: function(flag: boolean). trigger parent's fetch new list. flag=true: load more. flag=false: reload
- *
- */
-class EventList extends React.PureComponent {
+// /**
+//  * props:
+//  * events: events
+//  * isLoading: for flatlist to show loading
+//  * fetchEventList: function(flag: boolean). trigger parent's fetch new list. flag=true: load more. flag=false: reload
+//  *
+//  */
+// class EventList extends React.PureComponent {
 
-	constructor(props) {
-		super(props);
-	}
+// 	_onPressItem = (event) => {
+// 		// console.log(event.title);
+// 		this.props.navigation.navigate('EventDetails', { id: event.id })
+// 	}
 
-	_onPressItem = (event) => {
-		// TODO: navigate to event detail
-		// console.log(event.title);
-		this.props.navigation.navigate('EventDetails', { id: event.id })
-	}
+// 	_renderItem = ({ item }) => {
+// 		return (
+// 			<EventItem
+// 				event={item}
+// 				onPressItem={this._onPressItem}
+// 			/>
+// 		)
+// 	}
 
-	_renderItem = ({ item }) => {
-		return (
-			<EventItem
-				event={item}
-				onPressItem={this._onPressItem}
-			/>
-		)
-	}
+// 	_keyExtrator = (item) => {
+// 		return item.id;
+// 	}
 
-	_keyExtrator = (item) => {
-		return item.id;
-	}
+// 	// FIXME: what does this mean?
+// 	componentDidUpdate() {
+// 		if (typeof this.props.event !== 'undefined') {
+// 			this._flatlistRef.scrollToIndex({ animated: true, index: 0 });
+// 		}
+// 	}
 
-	componentDidUpdate() {
-		if (typeof this.props.event !== 'undefined') {
-			this._flatlistRef.scrollToIndex({ animated: true, index: 0 });
-		}
-	}
-
-	// TODO: pull-down refresh and touch-bottom load more.
-	render() {
-		return (
-			<FlatList
-				ref={(ref) => { this._flatlistRef = ref; }}
-				data={this.props.events}
-				renderItem={this._renderItem}
-				keyExtractor={this._keyExtrator}
-				ItemSeparatorComponent={() => <Divider styleName="section-header" />}
-				refreshing={this.props.isLoading}
-				onRefresh={() => this.props.fetchEventList(false)}
-				onEndReached={() => this.props.fetchEventList(true)}
-				onEndReachedThreshold={0.2}
-			/>
-		)
-	}
-}
+// 	// TODO: pull-down refresh and touch-bottom load more.
+// 	render() {
+// 		return (
+// 			<FlatList
+// 				ref={(ref) => { this._flatlistRef = ref; }}
+// 				data={this.props.events}
+// 				renderItem={this._renderItem}
+// 				keyExtractor={this._keyExtrator}
+// 				ItemSeparatorComponent={() => <Divider styleName="section-header" />}
+// 				refreshing={this.props.isLoading}
+// 				onRefresh={() => this.props.fetchEventList(false)}
+// 				onEndReached={() => this.props.fetchEventList(true)}
+// 				onEndReachedThreshold={0.2}
+// 			/>
+// 		)
+// 	}
+// }
 
 class EventFilterScreen extends Component {
 
@@ -264,6 +261,10 @@ class EventFilterScreen extends Component {
 		</Row>
 	)
 
+	_itemCallback = (id) => {
+		this.props.navigation.navigate('EventDetails', {id});
+	}
+
 	render() {
 		return (
 			<Grid>
@@ -279,7 +280,8 @@ class EventFilterScreen extends Component {
 						events={this.state.eventList}
 						isLoading={this.state.isLoading}
 						fetchEventList={this._fetchEventListAsync}
-						navigation={this.props.navigation}
+						callback={this._itemCallback}
+						grid={false}
 					/>
 				</Row>
 				{this._filterArea()}
