@@ -7,6 +7,7 @@ import {
     Title,
     Caption,
     Subtitle,
+    Divider,
 } from "@shoutem/ui";
 
 import {
