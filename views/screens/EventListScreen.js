@@ -44,9 +44,7 @@ import {
 
 import { DEFAULT_LOCATION } from "./../../utils/const";
 
-const styles = StyleSheet.create({
-
-})
+import { removeDuplicated } from "./../../utils/arrayUtil";
 
 /**
  * props:
@@ -147,6 +145,8 @@ class EventFilterScreen extends Component {
 			eventList: [],
 			isLoading: false,
 		}
+
+		this.evnetIDlist = [];
 	}
 
 	componentWillMount() {
@@ -192,7 +192,7 @@ class EventFilterScreen extends Component {
 		this.setState({ isLoading: false });
 		if (error) {
 			console.warn(error);
-			return ;
+			return;
 		}
 
 		const _newList = loadMore ? (
@@ -200,9 +200,12 @@ class EventFilterScreen extends Component {
 				[...this.state.eventList, ...fetchResult.events] :
 				this.state.eventList
 		) : fetchResult.events;
+
+		removeDuplicated(_newList, 'id');
 		this.setState({
 			eventList: _newList,
 		})
+
 	}
 
 	_selectDate = async (date) => {
@@ -262,7 +265,7 @@ class EventFilterScreen extends Component {
 	)
 
 	_itemCallback = (id) => {
-		this.props.navigation.navigate('EventDetails', {id});
+		this.props.navigation.navigate('EventDetails', { id });
 	}
 
 	render() {

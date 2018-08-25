@@ -39,12 +39,13 @@ class MineScreen extends Component {
 		})
 	}
 
-	componentDidMount() {
-		this.willFocusListener = this.props.navigation.addListener('willFocus', this._willFocusHandler);
+	async componentDidMount() {
+		// this.willFocusListener = this.props.navigation.addListener('willFocus', this._willFocusHandler);
+		await this._willFocusHandler();
 	}
 
 	componentWillUnmount() {
-		this.willFocusListener.remove();
+		// this.willFocusListener.remove();
 	}
 
 	_blankAvatar = () => {
