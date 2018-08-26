@@ -134,6 +134,7 @@ class EventList extends PureComponent {
         return item.id;
     }
 
+    // FIXME: change to other list. do not use flatlist.
     render() {
         return (
             <FlatList

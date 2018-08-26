@@ -12,8 +12,11 @@ import {
 } from "@shoutem/ui";
 
 import { Grid, Row, Col } from 'react-native-easy-grid';
+
 import FullScaleTouchable from '../components/FullScaleTouchable';
+
 import { fetchMeInfoService, fetchMEinfoAsync } from '../../services/UserServices';
+import { COLLECTION_TYPE } from '../../utils/const';
 
 class MineScreen extends Component {
 	static navigationOptions = {
@@ -27,15 +30,22 @@ class MineScreen extends Component {
 		super(props);
 
 		this.state = {
+			isLoading: false,
 			userMEinfo: null,
+			loadInfoFail: false,
 		}
 	}
 
 	_willFocusHandler = async () => {
+		this.setState({
+			isLoading: true,
+		})
+
 		const MEinfoRes = await fetchMEinfoAsync();
-		console.log("mine info:", MEinfoRes);
 		await this.setState({
+			isLoading: false,
 			userMEinfo: MEinfoRes,
+			loadInfoFail: MEinfoRes === null,
 		})
 	}
 
@@ -78,9 +88,18 @@ class MineScreen extends Component {
 		)
 	}
 
+	_navigateToCollections = (type) => {
+		this.props.navigation.navigate('MyCollections', {
+			user_id: this.state.userMEinfo.id,
+			collection_type: type,
+		})
+	}
+
 	render() {
 		const MEinfo = this.state.userMEinfo;
 
+		// TODO: while loading, prohibit user touch event
+		// TODO: let user reload if fetch info error
 		if (MEinfo === null) {
 			return (
 				<Grid>
@@ -95,7 +114,6 @@ class MineScreen extends Component {
 			)
 		} else {
 			// TODO: add two photos as background
-			// TODO: add navigations
 			return (
 				<Grid>
 					<Row size={3}>
@@ -108,14 +126,14 @@ class MineScreen extends Component {
 					<Row size={2}>
 						<Col>
 							<FullScaleTouchable
-								callback={null}
+								callback={() => this._navigateToCollections(COLLECTION_TYPE.wish)}
 								source={{}}
 								content={<Title>LIKES</Title>}
 							/>
 						</Col>
 						<Col>
 							<FullScaleTouchable
-								callback={null}
+								callback={() => this._navigateToCollections(COLLECTION_TYPE.wish)}
 								source={{}}
 								content={<Title>IN</Title>}
 							/>

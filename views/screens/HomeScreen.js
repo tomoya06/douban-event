@@ -108,7 +108,6 @@ class HomeScreen extends Component {
 
 	_getLocation = async () => {
 		const loc = await getLocation();
-		if (loc.id === this.state.locID) { return false; }
 		if (loc === null) {
 			// console.log("No location in storage. Use default Guangzhou. ");
 			await this.setState({
@@ -116,6 +115,7 @@ class HomeScreen extends Component {
 				locDisplayName: DEFAULT_LOCATION.displayName,
 			})
 		} else {
+			if (loc.id === this.state.locID) { return false; }
 			// console.log("location: ", loc.displayName, " id: ", loc.id);
 			await this.setState({
 				locID: loc.id,

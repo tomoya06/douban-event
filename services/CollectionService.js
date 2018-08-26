@@ -6,9 +6,10 @@ import {
     BASE_URL,
 } from "./../utils/const";
 
-function getCollectionsPromise(user_id, colType) {
+export async function getCollections(user_id, colType, startIndex) {
     return new Promise((resolve, reject) => {
-        const fetchURL = `${BASE_URL}/event/${colType}/${user_id}`;
+        const fetchURL = `${BASE_URL}/event/${colType}/${user_id}?start=${startIndex}`;
+        console.log(fetchURL);
         fetch(fetchURL)
             .then((response) => {
                 if (!response.ok) throw new Error(response.statusText);
@@ -19,14 +20,8 @@ function getCollectionsPromise(user_id, colType) {
                 return resolve([null, jRes]);
             })
             .catch((error) => {
-                console.error(error);
+                console.log(error);
                 return resolve([error, null]);
             })
     })
-}
-
-export async function getCollections(user_id, colType) {
-    const [error, result] = await getCollectionsPromise(user_id, colType);
-    if (error) return null;
-    return result.events;
 }

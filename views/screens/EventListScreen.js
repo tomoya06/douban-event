@@ -163,7 +163,6 @@ class EventFilterScreen extends Component {
 
 	_getLocation = async () => {
 		const loc = await getLocation();
-		if (loc.id === this.state.locID) { return false; }
 		if (loc === null) {
 			// console.log("No location in storage. Use default Guangzhou. ");
 			this.setState({
@@ -172,6 +171,7 @@ class EventFilterScreen extends Component {
 			})
 		} else {
 			// console.log("location: ", loc.displayName, " id: ", loc.id);
+			if (loc.id === this.state.locID) { return false; }
 			this.setState({
 				locID: loc.id,
 				locDisplayName: loc.displayName,

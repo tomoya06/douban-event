@@ -18,41 +18,11 @@ import {
 } from "react-native-easy-grid";
 
 import EventList from "./../components/EventList";
+import GoBackButton from "./../components/GoBackButton";
 
 import { COLLECTION_TYPE } from '../../utils/const';
 import { getCollections } from '../../services/CollectionService';
-
-/**
- * props:
- * onPressItem: function()
- * event: event
- */
-// class CollectionItem extends PureComponent {
-// 	_onPress = () => {
-// 		this.props.onPressItem(this.props.event);
-// 	}
-
-// 	render() {
-// 		const event = this.props.event;
-// 		return (
-// 			<TouchableOpacity
-// 				onPress={this._onPress}
-// 				styleName="flexible"
-// 			>
-// 				<Card>
-// 					<Image
-// 						styleName="medium-wide"
-// 						source={{ uri: event.image }}
-// 					/>
-// 					<View styleName="content">
-// 						<Subtitle ellipsizeMode="tail" numberOfLines={2}>{event.title}</Subtitle>
-// 						<Caption ellipsizeMode="tail" numberOfLines={1}>{event.time_str}</Caption>
-// 					</View>
-// 				</Card>
-// 			</TouchableOpacity>
-// 		)
-// 	}
-// }
+import { removeDuplicated } from '../../utils/arrayUtil';
 
 export default class MyCollectionsScreen extends Component {
 	constructor(props) {
@@ -65,11 +35,26 @@ export default class MyCollectionsScreen extends Component {
 		};
 	}
 
-	_fetchCollections = async () => {
+	_fetchCollections = async (loadmore) => {
 		this.setState({ isLoading: true });
-		const collections = await getCollections(this.state.user_id, COLLECTION_TYPE[this.state.collection_type]);
-		// TODO: load more or reload
-		this.setState({ collections, isLoading: false });
+
+		let _index = loadmore ? this.state.collections.length : 0;
+		const [error, collectionRes] = await getCollections(this.state.user_id, this.state.collection_type, _index);
+
+		if (error) {
+			this.setState({ isLoading: false });
+			return;
+		}
+
+		const _newCollections = loadmore ? (
+			collectionRes.total > this.state.collections.length ?
+				[...this.state.collections, ...collectionRes.events] :
+				this.state.collections
+		) : collectionRes.events;
+
+		removeDuplicated(_newCollections, 'id');
+
+		this.setState({ collections: _newCollections, isLoading: false });
 	}
 
 	_itemCallback = (id) => {
