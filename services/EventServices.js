@@ -101,8 +101,9 @@ export async function fetchCityEvents(city, day_type = '', event_type = '', star
 	})
 }
 
+// TODO: return different result: user not login, network error.
 /**
- * 
+ * mark event 
  * @param {string} id event ID
  * @param {string} userStatus CONST.js USER_STATUS
  * @param {boolean} flagID true: add mark / false: delete mark

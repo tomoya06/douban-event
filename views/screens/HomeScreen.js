@@ -25,7 +25,7 @@ import {
 import {
 	autoLogin,
 } from "./../../services/UserServices";
-import { getLocation } from '../../services/StorageService';
+import { getLocation, setLocation } from '../../services/StorageService';
 import { DEFAULT_LOCATION } from '../../utils/const';
 
 /**
@@ -84,6 +84,7 @@ class HomeScreen extends Component {
 			isLoading: false,
 			locID: '',
 			locDisplayName: '',
+			loadHomeFail: false,
 		}
 	}
 
@@ -91,11 +92,10 @@ class HomeScreen extends Component {
 		const [error, fetchResult] = await fetchCityEvents(this.state.locID, '', '', 0);
 
 		if (error) {
-			console.warn(error);
-			return;
+			this.setState({ loadHomeFail: true });
+		} else  {
+			this.setState({ events: fetchResult.events });
 		}
-
-		this.setState({ events: fetchResult.events });
 	}
 
 	_gotoEventDetails = (id) => {
@@ -108,8 +108,13 @@ class HomeScreen extends Component {
 
 	_getLocation = async () => {
 		const loc = await getLocation();
+		console.log(loc);
 		if (loc === null) {
 			// console.log("No location in storage. Use default Guangzhou. ");
+			await setLocation({
+				id: DEFAULT_LOCATION.id,
+				displayName: DEFAULT_LOCATION.displayName,
+			})
 			await this.setState({
 				locID: DEFAULT_LOCATION.id,
 				locDisplayName: DEFAULT_LOCATION.displayName,
@@ -128,7 +133,7 @@ class HomeScreen extends Component {
 	componentDidMount() {
 		this.willFocusListener = this.props.navigation.addListener('willFocus', async payload => {
 			const locUpdateRes = await this._getLocation();
-			if (!locUpdateRes) { return; }
+			if (!locUpdateRes) { console.log('same location'); return; }
 			await this._fetchEventListAsync();
 		})
 	}
@@ -138,7 +143,7 @@ class HomeScreen extends Component {
 	}
 
 	// TODO: change 2 cover to living image
-	// TODO: add pulldown refresh
+	// TODO: add reload refresh
 	render() {
 		return (
 			<Grid>
