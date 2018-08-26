@@ -200,7 +200,7 @@ class EventFilterScreen extends Component {
 						isLoading={this.state.isLoading}
 						fetchEventList={this._fetchEventListAsync}
 						callback={this._itemCallback}
-						grid={true}
+						grid={false}
 					/>
 				</Row>
 				{this._filterArea()}

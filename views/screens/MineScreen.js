@@ -172,7 +172,7 @@ class MineScreen extends Component {
 						</Col>
 						<Col>
 							<FullScaleTouchable
-								callback={() => this._navigateToCollections(COLLECTION_TYPE.wish)}
+								callback={() => this._navigateToCollections(COLLECTION_TYPE.in)}
 								source={{}}
 								content={<Title>IN</Title>}
 							/>

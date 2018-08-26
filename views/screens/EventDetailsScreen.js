@@ -330,7 +330,7 @@ class EventDetails extends Component {
 		const paramID = this.props.navigation.getParam('id', null);
 		if (paramID === null) {
 			// await this.setState({ eventID: '30023544' });
-			return ;
+			return;
 		} else {
 			await this.setState({ eventID: paramID });
 		}
@@ -362,12 +362,15 @@ class EventDetails extends Component {
 		await this.setState({ isMarking: true });
 		const markRes = await markEvent(this.state.eventID, status, flag);
 		await this.setState({ isMarking: false });
-		if (!markRes) {
-			toastMsg("Oops...How's Your Network? OR, Have You Logged In?");
-			return;
+		if (markRes == 4) {
+			toastMsg("Oops...Have You Logged In?"); return;
+		} else if (markRes == 0) {
+			toastMsg("Oops...How's Your Network?"); return;
 		}
 		const [error, _eventDetails] = await fetchEventDetails(this.state.eventID);
-		if (error) { return; }
+		if (error) {
+			toastMsg("Oops...How's Your Network?"); return;
+		}
 		this.setState({ eventDetails: _eventDetails });
 	}
 

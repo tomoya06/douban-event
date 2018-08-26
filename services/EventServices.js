@@ -103,7 +103,7 @@ export async function fetchCityEvents(city, day_type = '', event_type = '', star
 
 // TODO: return different result: user not login, network error.
 /**
- * mark event 
+ * mark event. return 4: no login; 1: success: 0: fail,
  * @param {string} id event ID
  * @param {string} userStatus CONST.js USER_STATUS
  * @param {boolean} flagID true: add mark / false: delete mark
@@ -115,8 +115,6 @@ export function markEvent(id, userStatus, flagID = true) {
 		const _method = flagID ? 'POST' : 'DELETE';
 		const markURL = `${BASE_URL}/event/${id}/${userStatus}`;
 
-		console.log(`Marking Event ${id} as ${_status} with ${_method} `);
-
 		const markOption = {
 			method: _method,
 		}
@@ -125,6 +123,8 @@ export function markEvent(id, userStatus, flagID = true) {
 			markOption.headers = {
 				'Authorization': `Bearer ${isLoginRes.access_token}`,
 			}
+		} else {
+			return resolve(4);
 		}
 
 		fetch(markURL, markOption)
@@ -135,10 +135,10 @@ export function markEvent(id, userStatus, flagID = true) {
 			})
 			.then((jRes) => {
 				if (typeof jRes.msg !== 'undefined') { throw new Error(jRes.msg); }
-				return resolve(true);
+				return resolve(1);
 			})
 			.catch((error) => {
-				return resolve(false);
+				return resolve(0);
 			})
 	})
 }

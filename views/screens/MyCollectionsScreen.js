@@ -74,7 +74,7 @@ export default class MyCollectionsScreen extends Component {
 				<Row style={{ height: 70 }}>
 					<NavigationBar
 						leftComponent={<GoBackButton navigation={this.props.navigation} />}
-						centerComponent={<Title>{this.state.collection_type.toUpperCase()}</Title>}
+						centerComponent={<Title>{COLLECTION_TYPE[this.state.collection_type]}</Title>}
 					/>
 				</Row>
 				<Row>
