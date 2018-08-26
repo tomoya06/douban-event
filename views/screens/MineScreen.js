@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import {
-	View,
 	Text,
+	View,
 	Button,
 	Icon,
 	Tile,
@@ -11,12 +11,28 @@ import {
 	Subtitle,
 } from "@shoutem/ui";
 
+import {
+	StyleSheet,
+} from "react-native";
+
 import { Grid, Row, Col } from 'react-native-easy-grid';
 
 import FullScaleTouchable from '../components/FullScaleTouchable';
 
 import { fetchMeInfoService, fetchMEinfoAsync } from '../../services/UserServices';
 import { COLLECTION_TYPE } from '../../utils/const';
+import { getUserLogin } from '../../services/StorageService';
+
+import FullScaleLoading from '../components/FullScaleLoading';
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: '#000',
+	}
+})
 
 class MineScreen extends Component {
 	static navigationOptions = {
@@ -33,6 +49,7 @@ class MineScreen extends Component {
 			isLoading: false,
 			userMEinfo: null,
 			loadInfoFail: false,
+			currentUsername: '',
 		}
 	}
 
@@ -41,17 +58,32 @@ class MineScreen extends Component {
 			isLoading: true,
 		})
 
-		const MEinfoRes = await fetchMEinfoAsync();
-		await this.setState({
-			isLoading: false,
-			userMEinfo: MEinfoRes,
-			loadInfoFail: MEinfoRes === null,
-		})
+		const loginRes = await getUserLogin();
+		if (loginRes === null) { // user log out or no user login yet
+			this.setState({
+				isLoading: false,
+				userMEinfo: null,
+				currentUsername: '',
+				loadInfoFail: false,
+			})
+		} else if (loginRes.username !== this.state.currentUsername) { // new user login
+			const MEinfoRes = await fetchMEinfoAsync();
+			this.setState({
+				isLoading: false,
+				userMEinfo: MEinfoRes,
+				loadInfoFail: MEinfoRes === null,
+				currentUsername: loginRes.username,
+			})
+		} else { // no changes.
+			this.setState({
+				isLoading: false,
+			})
+		}
 	}
 
 	async componentDidMount() {
-		// this.willFocusListener = this.props.navigation.addListener('willFocus', this._willFocusHandler);
-		await this._willFocusHandler();
+		this.willFocusListener = this.props.navigation.addListener('willFocus', this._willFocusHandler);
+		// await this._willFocusHandler();
 	}
 
 	componentWillUnmount() {
@@ -100,6 +132,13 @@ class MineScreen extends Component {
 
 		// TODO: while loading, prohibit user touch event
 		// TODO: let user reload if fetch info error
+		if (this.state.isLoading) {
+			return (
+				<View style={{ backgroundColor: '#000', flex: 1 }}>
+					<FullScaleLoading />
+				</View>
+			)
+		}
 		if (MEinfo === null) {
 			return (
 				<Grid>
@@ -118,7 +157,7 @@ class MineScreen extends Component {
 				<Grid>
 					<Row size={3}>
 						<FullScaleTouchable
-							callback={null}
+							callback={() => this.props.navigation.navigate('Setting')}
 							source={{}}
 							content={this._loginAvatar()}
 						/>

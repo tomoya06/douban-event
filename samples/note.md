@@ -25,3 +25,9 @@
 * 之后的所有请求不再尝试登陆。直接读取存储的token然后进行请求操作。
 
 * 因此除了登陆，其他时候只需直接读取token/判断token是否有效期内，便可进行后续请求。
+
+### 目前使用到的第三方库
+react-native-easy-grid
+react-native-swiper
+@shoutem
+react-native-progress 

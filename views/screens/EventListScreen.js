@@ -63,12 +63,14 @@ class EventFilterScreen extends Component {
 		this.evnetIDlist = [];
 	}
 
+	_willFocusHandler = async () => {
+		const locUpdateRes = await this._getLocation();
+		if (!locUpdateRes) { return; }
+		await this._fetchEventListAsync();
+	}
+
 	componentWillMount() {
-		this.willFocusListener = this.props.navigation.addListener('willFocus', async payload => {
-			const locUpdateRes = await this._getLocation();
-			if (!locUpdateRes) { return; }
-			await this._fetchEventListAsync();
-		})
+		this.willFocusListener = this.props.navigation.addListener('willFocus', this._willFocusHandler)
 	}
 
 	componentWillUnmount() {

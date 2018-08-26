@@ -44,6 +44,7 @@ import {
 	copyText,
 	toastMsg,
 } from "./../../services/UtilServices";
+import FullScaleLoading from '../components/FullScaleLoading';
 
 /**
  * props:
@@ -101,7 +102,7 @@ class BasicInfoRow extends Component {
 	_addEventToCalendar = () => {
 		addEventToCalendar(this.props.eventDetails);
 	}
-// TODO: add open map util
+	// TODO: add open map util
 	render() {
 		const details = this.props.eventDetails;
 		return details && (
@@ -318,21 +319,23 @@ class EventDetails extends Component {
 			eventID: '',
 			eventDetails: null,
 			contentCollapsed: true,
+			isMarking: false,
 			isLoading: false,
 		}
 	}
 
 	async componentDidMount() {
 		// getParam(key, default_value)
+		await this.setState({ isLoading: true });
 		const paramID = this.props.navigation.getParam('id', null);
 		if (paramID === null) {
-			await this.setState({ eventID: '30023544' });
-			// return ;
+			// await this.setState({ eventID: '30023544' });
+			return ;
 		} else {
 			await this.setState({ eventID: paramID });
 		}
-		console.log(this.state.eventID);
 		const [error, _eventDetails] = await fetchEventDetails(this.state.eventID);
+		await this.setState({ isLoading: false });
 		if (error) { return; }
 		await this.setState({ eventDetails: _eventDetails });
 	}
@@ -356,9 +359,9 @@ class EventDetails extends Component {
 	}
 
 	_markEventAsync = async (status, flag) => {
-		await this.setState({ isLoading: true });
+		await this.setState({ isMarking: true });
 		const markRes = await markEvent(this.state.eventID, status, flag);
-		await this.setState({ isLoading: false });
+		await this.setState({ isMarking: false });
 		if (!markRes) {
 			toastMsg("Oops...How's Your Network? OR, Have You Logged In?");
 			return;
@@ -370,6 +373,7 @@ class EventDetails extends Component {
 
 	render() {
 		const event = this.state.eventDetails;
+
 		return (
 			<Grid>
 				<Row style={{ height: 70 }}>
@@ -380,27 +384,34 @@ class EventDetails extends Component {
 					/>
 				</Row>
 				<Row>
-					<ScrollView
-						stickyHeaderIndices={[5]}
-					>
-						<EventImageRow eventDetails={event} />
+					{
+						this.state.isLoading ?
+							(
+								<FullScaleLoading />
+							) : (
+								<ScrollView
+									stickyHeaderIndices={[5]}
+								>
+									<EventImageRow eventDetails={event} />
 
-						<View styleName="sm-gutter-top" />
-						<BasicInfoRow eventDetails={event} />
-						<UserActionRow eventDetails={event} markEvent={this._markEventAsync} isLoading={this.state.isLoading} />
-						<View styleName="sm-gutter-top" />
+									<View styleName="sm-gutter-top" />
+									<BasicInfoRow eventDetails={event} />
+									<UserActionRow eventDetails={event} markEvent={this._markEventAsync} isLoading={this.state.isMarking} />
+									<View styleName="sm-gutter-top" />
 
-						<IntroToggle
-							toggleContentCollapse={this._toggleContentCollapse}
-							contentCollapsed={this.state.contentCollapsed}
-						/>
-						<IntroRow
-							eventDetails={event}
-							contentCollapsed={this.state.contentCollapsed}
-						/>
-					</ScrollView>
+									<IntroToggle
+										toggleContentCollapse={this._toggleContentCollapse}
+										contentCollapsed={this.state.contentCollapsed}
+									/>
+									<IntroRow
+										eventDetails={event}
+										contentCollapsed={this.state.contentCollapsed}
+									/>
+								</ScrollView>
+							)
+					}
 				</Row>
-			</Grid>
+			</Grid >
 		);
 	}
 }
