@@ -130,7 +130,6 @@ class MineScreen extends Component {
 	render() {
 		const MEinfo = this.state.userMEinfo;
 
-		// TODO: while loading, prohibit user touch event
 		// TODO: let user reload if fetch info error
 		if (this.state.isLoading) {
 			return (

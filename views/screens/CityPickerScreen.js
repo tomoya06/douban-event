@@ -38,6 +38,7 @@ import {
 } from "./../../services/StorageService";
 
 import commonStyles from "./../styles/commonStyles";
+import { toastMsg } from '../../services/UtilServices';
 
 /**
  * props:
@@ -203,10 +204,11 @@ class CityPickerScreen extends Component {
 	}
 
 	_navigate = async (id, displayName) => {
-		// TODO: make some noise
-		// console.log('will navigate to ', {id, displayName});
 		const setResult = await setLocation({ id, displayName });
-		this.props.navigation.goBack();
+		if (setResult) {
+			toastMsg(`Set Default Location To ${displayName}`);
+			this.props.navigation.goBack();
+		}
 	}
 
 	render() {
