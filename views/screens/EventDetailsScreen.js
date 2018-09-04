@@ -266,6 +266,7 @@ class IntroToggle extends Component {
 	}
 }
 
+// TODO: change HTML renderer
 /**
  * props:
  * eventDetails: the same

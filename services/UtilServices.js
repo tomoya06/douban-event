@@ -9,7 +9,8 @@ import {
 } from "react-native";
 
 function formatDate(dateStr) {
-    return (new Date(dateStr)).toISOString();
+    console.log(dateStr);
+    return dateStr.replace(/(\d{4}-\d{2}-\d{2})\s(\d{2}:\d{2}:\d{2})/g, '$1T$2.000Z');
 }
 
 export function toastMsg(msg) {
@@ -45,7 +46,7 @@ export function addEventToCalendar(eventDetails) {
             // when { action: 'CANCELLED' } is returned, the dialog was dismissed
             // FIXME: cancel judge error.
             console.warn(JSON.stringify(eventInfo));
-            if (eventInfo.action === 'CANCELLED') { toastMsg('Cancelled Adding Calendar Event.') }
+            if (eventInfo.action === 'CANCELED') { toastMsg('Canceled.') }
             else { toastMsg('Event Added.') }
         })
         .catch((error) => {

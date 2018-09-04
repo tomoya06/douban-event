@@ -12,6 +12,8 @@ import {
     Image,
 } from "@shoutem/ui";
 
+import { LargeList } from "react-native-largelist-v2";
+
 import {
     FlatList,
 } from "react-native";
@@ -22,7 +24,7 @@ import {
  * event: event object {title, time_str, image_hlarge, category_name, id}
  * onPress: function
  */
-class EventItem extends React.PureComponent {
+class EventItem extends PureComponent {
 
     _onPress = () => {
         this.props.onPressItem(this.props.event);
@@ -56,34 +58,38 @@ class EventItem extends React.PureComponent {
  * onPressItem: function()
  * event: event
  */
-class CollectionItem extends PureComponent {
-    _onPress = () => {
-        this.props.onPressItem(this.props.event);
-    }
+// class CollectionItem extends PureComponent {
+//     _onPress = () => {
+//         this.props.onPressItem(this.props.event);
+//     }
 
-    render() {
-        const event = this.props.event;
-        return (
-            <TouchableOpacity
-                onPress={this._onPress}
-                styleName="flexible"
-            >
-            <View styleName="horizontal flexible">
-                <View styleName="sm-gutter-left"></View>
-                <Card styleName="fill-parent">
-                    <Image
-                        styleName="medium-wide"
-                        source={{ uri: event.image }}
-                    />
-                    <View styleName="content">
-                        <Subtitle ellipsizeMode="tail" numberOfLines={1}>{event.title}</Subtitle>
-                        <Caption ellipsizeMode="tail" numberOfLines={1}>{event.time_str}</Caption>
-                    </View>
-                </Card>
-            </View>
-            </TouchableOpacity>
-        )
-    }
+//     render() {
+//         const event = this.props.event;
+//         return (
+//             <TouchableOpacity
+//                 onPress={this._onPress}
+//                 styleName="flexible"
+//             >
+//             <View styleName="horizontal flexible">
+//                 <View styleName="sm-gutter-left"></View>
+//                 <Card styleName="fill-parent">
+//                     <Image
+//                         styleName="medium-wide"
+//                         source={{ uri: event.image }}
+//                     />
+//                     <View styleName="content">
+//                         <Subtitle ellipsizeMode="tail" numberOfLines={1}>{event.title}</Subtitle>
+//                         <Caption ellipsizeMode="tail" numberOfLines={1}>{event.time_str}</Caption>
+//                     </View>
+//                 </Card>
+//             </View>
+//             </TouchableOpacity>
+//         )
+//     }
+// }
+
+class CollectionItem extends PureComponent {
+
 }
 
 /**
@@ -94,59 +100,100 @@ class CollectionItem extends PureComponent {
  * grid: boolean. show in grid(two column) or single list
  * callback: function(id) for press item.
  */
-class EventList extends PureComponent {
+// class EventList extends PureComponent {
 
-    _onPressItem = (event) => {
-        // console.log(event.title);
-        this.props.callback(event.id);
+//     _onPressItem = (event) => {
+//         // console.log(event.title);
+//         this.props.callback(event.id);
+//     }
+
+//     _renderItem = ({ item }) => {
+//         if (this.props.grid) {
+//             return (
+//                 <CollectionItem
+//                     event={item}
+//                     onPressItem={this._onPressItem}
+//                 />
+//             )
+//         } else {
+//             return (
+//                 <EventItem
+//                     event={item}
+//                     onPressItem={this._onPressItem}
+//                 />
+//             )
+//         }
+//     }
+
+//     _itemSeparatorComponent = () => {
+//         // if (this.props.grid) {
+//         //     return (<View></View>)
+//         // } else {
+//         //     return (<Divider styleName="section-header" />)
+//         // }
+//         // return (<Divider styleName="section-header" />);
+//         return (<View styleName="md-gutter-bottom"></View>)
+//     }
+
+//     _keyExtrator = (item) => {
+//         return item.id;
+//     }
+
+//     // FIXME: change to other list. do not use flatlist.
+//     render() {
+//         return (
+//             <FlatList
+//                 ref={(ref) => { this._flatlistRef = ref; }}
+//                 data={this.props.events}
+//                 renderItem={this._renderItem}
+//                 keyExtractor={this._keyExtrator}
+//                 ItemSeparatorComponent={this._itemSeparatorComponent}
+//                 refreshing={this.props.isLoading}
+//                 onRefresh={() => this.props.fetchEventList(false)}
+//                 onEndReached={() => this.props.fetchEventList(true)}
+//                 onEndReachedThreshold={0.2}
+//                 numColumns={this.props.grid ? 2 : 1}
+//             />
+//         )
+//     }
+// }
+
+class EventList extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: this.props.events
+        }
     }
 
-    _renderItem = ({ item }) => {
-        if (this.props.grid) {
+    _renderItem = ({section, row}) => {
+        const curItem = this.state.data[row];
+        // TODO: change two styles
+        if (this.props.grid == this.props.grid) {
             return (
-                <CollectionItem
-                    event={item}
-                    onPressItem={this._onPressItem}
+                <CollectionItem 
+                    event={curItem}
+                    onPressItem={() => this.props.callback(curItem.id)}
                 />
             )
         } else {
             return (
-                <EventItem
-                    event={item}
-                    onPressItem={this._onPressItem}
+                <EventItem 
+                    event={curItem}
+                    onPress={() => this.props.callback(curItem.id)}
                 />
             )
         }
     }
 
-    _itemSeparatorComponent = () => {
-        // if (this.props.grid) {
-        //     return (<View></View>)
-        // } else {
-        //     return (<Divider styleName="section-header" />)
-        // }
-        // return (<Divider styleName="section-header" />);
-        return (<View styleName="md-gutter-bottom"></View>)
-    }
-
-    _keyExtrator = (item) => {
-        return item.id;
-    }
-
-    // FIXME: change to other list. do not use flatlist.
     render() {
         return (
-            <FlatList
-                ref={(ref) => { this._flatlistRef = ref; }}
-                data={this.props.events}
-                renderItem={this._renderItem}
-                keyExtractor={this._keyExtrator}
-                ItemSeparatorComponent={this._itemSeparatorComponent}
-                refreshing={this.props.isLoading}
-                onRefresh={() => this.props.fetchEventList(false)}
-                onEndReached={() => this.props.fetchEventList(true)}
-                onEndReachedThreshold={0.2}
-                numColumns={this.props.grid ? 2 : 1}
+            <LargeList
+                style={{ flex: 1 }}
+                data={this.state.data}
+                renderIndexPath={this._renderItem}
             />
         )
     }
