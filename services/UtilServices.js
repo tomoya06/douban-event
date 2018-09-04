@@ -5,6 +5,7 @@ import Toast from "react-native-root-toast";
 import {
     Clipboard,
     Platform,
+    Share,
 } from "react-native";
 
 function formatDate(dateStr) {
@@ -52,4 +53,11 @@ export function addEventToCalendar(eventDetails) {
             console.warn(error);
             toastMsg(`Error: ${error}`)
         });
+}
+
+export function shareText(title, message) {
+    Share.share({
+        message,
+        title,
+    }, {})
 }

@@ -19,6 +19,7 @@ import {
 import {
 	getLocation,
 } from "./../services/StorageService";
+import { shareText } from "./UtilServices";
 
 export const EVENT_DAY_TYPES = [
 	{ displayName: '所有', typeName: '' },
@@ -140,4 +141,9 @@ export function markEvent(id, userStatus, flagID = true) {
 				return resolve(0);
 			})
 	})
+}
+
+export function shareEvent(event) {
+	const formatMessage = `[${event.title}] -- Visit ${event.alt}`;
+	shareText('Share Event', formatMessage);
 }

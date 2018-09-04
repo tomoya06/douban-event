@@ -37,6 +37,7 @@ import {
 import {
 	fetchEventDetails,
 	markEvent,
+	shareEvent,
 } from "./../../services/EventServices";
 
 import {
@@ -346,11 +347,9 @@ class EventDetails extends Component {
 
 	_rightComponent = () => (
 		<Button
-			onPress={() => console.log('right com. pressed')}
+			onPress={() => shareEvent(this.state.eventDetails)}
 		><Icon name="share-android" /></Button>
 	)
-
-	// TODO: add share function
 
 	_toggleContentCollapse = () => {
 		this.setState({

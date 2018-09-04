@@ -6,6 +6,14 @@ import {
     BASE_URL,
 } from "./../utils/const";
 
+export async function getLikeCover() {
+
+}
+
+export async function getInCover() {
+    
+}
+
 export async function getCollections(user_id, colType, startIndex) {
     return new Promise((resolve, reject) => {
         const fetchURL = `${BASE_URL}/event/${colType}/${user_id}?start=${startIndex}`;

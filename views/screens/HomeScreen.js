@@ -54,7 +54,7 @@ class HomeEventSlides extends Component {
 	}
 
 	_reloadCallback = () => {
-		if (!this.props.isLoading && this.props.loadFail``) {
+		if (!this.props.isLoading && this.props.loadFail) {
 			this._reloadCallback();
 		}
 	}
@@ -198,8 +198,6 @@ class HomeScreen extends Component {
 	}
 
 	// TODO: change 2 cover to living image
-	// TODO: add reload refresh
-	// TODO: add loading indicator
 	render() {
 		return (
 			<Grid>
