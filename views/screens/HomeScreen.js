@@ -31,6 +31,8 @@ import { getLocation, setLocation } from '../../services/StorageService';
 import { DEFAULT_LOCATION } from '../../utils/const';
 import FullScaleLoading from '../components/FullScaleLoading';
 
+import I18n from "./../../i18n/translate";
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -214,13 +216,13 @@ class HomeScreen extends Component {
 					<Col>
 						<FullScaleTouchable
 							source={{ uri: 'https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg' }}
-							content={<View styleName="clear vertical h-center"><Title>Browser</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></View>}
+							content={<View styleName="clear vertical h-center"><Title>{I18n.t('browser')}</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></View>}
 							callback={this._gotoEventList} />
 					</Col>
 					<Col>
 						<FullScaleTouchable
 							source={{ uri: 'https://img3.doubanio.com/pview/event_poster/raw/public/737fa99450d8a22.jpg' }}
-							content={<View styleName="clear vertical h-center"><Title>Your</Title><Title>Library</Title></View>}
+							content={<View styleName="clear vertical h-center"><Title>{I18n.t('library')}</Title></View>}
 							callback={this._gotoMine} />
 					</Col>
 				</Row>

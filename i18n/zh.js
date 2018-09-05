@@ -1,0 +1,16 @@
+export default {
+    login: '登陆',
+    success: '成功',
+    browser: '探索',
+    library: '收藏',
+    wish: '想去',
+    in: '参加',
+    list: '列表',
+    event: '活动',
+    addToWish: '我也想去',
+    takeMeIn: '我就要去',
+    withOther: '此外还有',
+    people: '人',
+    anEventBy: '此活动来自',
+    introduction: '简介',
+}

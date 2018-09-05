@@ -11,6 +11,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage; // <-- Add to ReactNativeI18n to the imports
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
             new PhotoViewPackage(),
             new LinearGradientPackage(),
             new VectorIconsPackage(),
-            new AddCalendarEventPackage()
+            new AddCalendarEventPackage(),
+            new RNI18nPackage() // <-- Add it to the packages list
       );
     }
 

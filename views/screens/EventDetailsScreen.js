@@ -47,6 +47,8 @@ import {
 } from "./../../services/UtilServices";
 import FullScaleLoading from '../components/FullScaleLoading';
 
+import I18n from "./../../i18n/translate";
+
 /**
  * props:
  * eventDetails: event details object
@@ -173,7 +175,7 @@ class UserActionRow extends Component {
 									onPress={() => this._deleteMarkEvent(details.status)}
 								>
 									<Icon name={details.status == USER_STATUS.wishCN ? 'like' : 'notifications'} />
-									<Text>{details.status == USER_STATUS.wishCN ? 'LIKED' : 'I\'M IN'}</Text>
+									<Text>{details.status == USER_STATUS.wishCN ? I18n.t('addToWish') : I18n.t('takeMeIn')}</Text>
 								</Button>
 							</View>
 						) : (
@@ -183,14 +185,14 @@ class UserActionRow extends Component {
 									onPress={() => this._markEvent(USER_STATUS.wish)}
 								>
 									<Icon name="like" />
-									<Text>{'ADD TO WISH'}</Text>
+									<Text>{I18n.t('addToWish')}</Text>
 								</Button>
 								<Button
 									styleName="confirmation secondary"
 									onPress={() => this._markEvent(USER_STATUS.in)}
 								>
 									<Icon name="notifications" />
-									<Text>{'TAKE ME IN'}</Text>
+									<Text>{I18n.t('takeMeIn')}</Text>
 								</Button>
 							</View>
 						)
@@ -255,7 +257,7 @@ class IntroToggle extends Component {
 			>
 				<ShRow styleName="small">
 					<Icon name="about" />
-					<Text>INTRODUCTION</Text>
+					<Text>{I18n.t('introduction')}</Text>
 					<Icon
 						name={this.props.contentCollapsed ? 'down-arrow' : 'up-arrow'}
 						styleName="disclosure"
@@ -300,7 +302,7 @@ class IntroRow extends Component {
 						)}
 				</View>
 				<View styleName="horizontal h-center md-gutter-vertical v-center">
-					<Caption>AN EVENT BY  </Caption>
+					<Caption>{I18n.t('anEventBy')}  </Caption>
 					<Image
 						styleName="small-avatar"
 						source={{ uri: details.owner.avatar }}
@@ -343,7 +345,7 @@ class EventDetails extends Component {
 	}
 
 	_centerComponent = () => (
-		<Title>EVENT</Title>
+		<Title>{I18n.t('event')}</Title>
 	)
 
 	_rightComponent = () => (

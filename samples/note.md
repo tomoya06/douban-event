@@ -31,3 +31,4 @@ react-native-easy-grid
 react-native-swiper
 @shoutem
 react-native-progress 
+react-native-i18n

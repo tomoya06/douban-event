@@ -46,6 +46,8 @@ import { DEFAULT_LOCATION } from "./../../utils/const";
 
 import { removeDuplicated } from "./../../utils/arrayUtil";
 
+import I18n from "./../../i18n/translate";
+
 class EventFilterScreen extends Component {
 
 	constructor(props) {
@@ -97,6 +99,9 @@ class EventFilterScreen extends Component {
 	}
 
 	_fetchEventListAsync = async (loadMore = false) => {
+		if (this.state.isLoading) {
+			return ;
+		}
 		this.setState({ isLoading: true });
 		const [error, fetchResult] = await fetchCityEvents(
 			this.state.locID,
@@ -148,7 +153,7 @@ class EventFilterScreen extends Component {
 	)
 
 	_centerComponent = () => (
-		<Title>LIST</Title>
+		<Title>{I18n.t('browser')}</Title>
 	)
 
 	_filterArea = () => (

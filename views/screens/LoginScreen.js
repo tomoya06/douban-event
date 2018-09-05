@@ -20,6 +20,8 @@ import {
 } from "./../../services/UserServices";
 import { toastMsg } from '../../services/UtilServices';
 
+import I18n from "./../../i18n/translate";
+
 class LoginScreen extends Component {
 
 	constructor(props) {
@@ -89,12 +91,12 @@ class LoginScreen extends Component {
 					disabled={this.state.isLoading}
 					onPress={() => this._submitLogin()}
 				>
-					<Text>LOGIN</Text>
+					<Text>{I18n.t('login')}</Text>
 					{!this.state.isLoading ? (<Icon name="right-arrow" />) : (<Spinner style={{ color: '#fff' }} />)}
 				</Button>
 				{this.state.isLoginSuccess && (
 					<Button styleName="clear muted md-gutter-top" disabled={true}>
-						<Text>LOGIN SUCCESS...</Text>
+						<Text>{I18n.fallbacks('login')+I18n.t('success')}...</Text>
 					</Button>
 				)}
 
