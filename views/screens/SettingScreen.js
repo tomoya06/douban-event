@@ -25,6 +25,8 @@ import { toastMsg } from "./../../services/UtilServices";
 
 import { userLogoutService } from '../../services/UserServices';
 
+import I18n from "./../../i18n/translate";
+
 export default class SettingScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -35,7 +37,6 @@ export default class SettingScreen extends Component {
 	_logoutHandler = async () => {
 		const logoutRes = await userLogoutService();
 		if (logoutRes) {
-			toastMsg("Log Out Success.");
 			this.props.navigation.goBack();
 		}
 	}
@@ -46,7 +47,7 @@ export default class SettingScreen extends Component {
 				<Row style={{ height: 70 }}>
 					<NavigationBar
 						leftComponent={<GoBackButton navigation={this.props.navigation} />}
-						centerComponent={<Title>SETTINGS</Title>}
+						centerComponent={<Title>{I18n.t('setting')}</Title>}
 					/>
 				</Row>
 				<Row>
@@ -57,7 +58,7 @@ export default class SettingScreen extends Component {
 						>
 							<ShRow styleName="small">
 								<Icon name="exit-to-app" />
-								<Text>Log Out</Text>
+								<Text>{I18n.t('logout')}</Text>
 								<Icon styleName="disclosure" name="right-arrow" />
 							</ShRow>
 						</TouchableOpacity>

@@ -8,6 +8,8 @@ import {
     Share,
 } from "react-native";
 
+import I18n from "./../i18n/translate";
+
 function formatDate(dateStr) {
     console.log(dateStr);
     return dateStr.replace(/(\d{4}-\d{2}-\d{2})\s(\d{2}:\d{2}:\d{2})/g, '$1T$2.000Z');
@@ -44,15 +46,14 @@ export function addEventToCalendar(eventDetails) {
             // These are two different identifiers on iOS.
             // On Android, where they are both equal and represent the event id, also strings.
             // when { action: 'CANCELLED' } is returned, the dialog was dismissed
-            // FIXME: cancel judge error.
             console.warn(JSON.stringify(eventInfo));
-            if (eventInfo.action === 'CANCELED') { toastMsg('Canceled.') }
-            else { toastMsg('Event Added.') }
+            if (eventInfo.action === 'CANCELED') { toastMsg(I18n.t('error_calendarCancel')) }
+            else { toastMsg(I18n.t('error_calendarAdded')) }
         })
         .catch((error) => {
             // handle error such as when user rejected permissions
             console.warn(error);
-            toastMsg(`Error: ${error}`)
+            toastMsg(I18n.t('error_noCalendar'));
         });
 }
 

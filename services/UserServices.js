@@ -13,10 +13,6 @@ import {
     AUTH_URL, ME_URL,
 } from "./../utils/const";
 
-import {
-    urlBuilder,
-} from "./../utils/urlBuilder";
-
 const CLIENT_ID = '0b2bdeda43b5688921839c8ecb20399b';
 const CLIENT_SECRET = '822e2ca55c426005';
 const GRAND_TYPE = 'password';

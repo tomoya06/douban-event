@@ -23,6 +23,8 @@ import { fetchMeInfoService, fetchMEinfoAsync } from '../../services/UserService
 import { COLLECTION_TYPE } from '../../utils/const';
 import { getUserLogin } from '../../services/StorageService';
 
+import I18n from './../../i18n/translate';
+
 import FullScaleLoading from '../components/FullScaleLoading';
 
 const styles = StyleSheet.create({
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
 
 class MineScreen extends Component {
 	static navigationOptions = {
-		tabBarLabel: 'Mine',
+		tabBarLabel: I18n.t('library'),
 		tabBarIcon: ({ tintColor }) => (
 			<Icon name="add-to-favorites-on" style={{ color: tintColor }} />
 		)
@@ -99,7 +101,7 @@ class MineScreen extends Component {
 					source={require('./../../src/img/conversation.png')}
 				/>
 				<View styleName="md-gutter-bottom"></View>
-				<Title>Log In For More Fun</Title>
+				<Title>{I18n.t('loginAdvice')}</Title>
 			</View>
 		)
 	}
@@ -166,14 +168,14 @@ class MineScreen extends Component {
 							<FullScaleTouchable
 								callback={() => this._navigateToCollections(COLLECTION_TYPE.wish)}
 								source={{}}
-								content={<Title>LIKES</Title>}
+								content={<Title>{I18n.t('wish')}</Title>}
 							/>
 						</Col>
 						<Col>
 							<FullScaleTouchable
 								callback={() => this._navigateToCollections(COLLECTION_TYPE.in)}
 								source={{}}
-								content={<Title>IN</Title>}
+								content={<Title>{I18n.t('in')}</Title>}
 							/>
 						</Col>
 					</Row>

@@ -24,6 +24,8 @@ import { COLLECTION_TYPE } from '../../utils/const';
 import { getCollections } from '../../services/CollectionService';
 import { removeDuplicated } from '../../utils/arrayUtil';
 
+import I18n from "./../../i18n/translate";
+
 export default class MyCollectionsScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -74,7 +76,7 @@ export default class MyCollectionsScreen extends Component {
 				<Row style={{ height: 70 }}>
 					<NavigationBar
 						leftComponent={<GoBackButton navigation={this.props.navigation} />}
-						centerComponent={<Title>{COLLECTION_TYPE[this.state.collection_type]}</Title>}
+						centerComponent={<Title>{I18n.t(COLLECTION_TYPE[this.state.collection_type])}</Title>}
 					/>
 				</Row>
 				<Row>

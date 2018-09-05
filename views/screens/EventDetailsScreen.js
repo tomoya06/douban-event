@@ -216,7 +216,7 @@ class UserActionRow extends Component {
 										styleName="confirmation clear"
 										disabled={true}
 									>
-										<Caption>{`WITH TOTAL ${details.wisher_count} LIKED AND ${details.participant_count} IN`}</Caption>
+										<Caption>{`${I18n.t('withOther') + details.wisher_count + I18n.t('people') + I18n.t('wish')} / ${details.participant_count + I18n.t('people') + I18n.t('in')}`}</Caption>
 									</Button>
 								</View>
 							) : (
@@ -225,13 +225,13 @@ class UserActionRow extends Component {
 										styleName="confirmation clear"
 										disabled={true}
 									>
-										<Caption>{"WITH OTHER " + details.wisher_count}</Caption>
+										<Caption>{I18n.t('withOther') + details.wisher_count + I18n.t('people')}</Caption>
 									</Button>
 									<Button
 										styleName="confirmation clear"
 										disabled={true}
 									>
-										<Caption>{"WITH OTHER " + details.participant_count}</Caption>
+										<Caption>{I18n.t('withOther') + details.participant_count + I18n.t('people')}</Caption>
 									</Button>
 								</View>
 							)
@@ -365,13 +365,13 @@ class EventDetails extends Component {
 		const markRes = await markEvent(this.state.eventID, status, flag);
 		await this.setState({ isMarking: false });
 		if (markRes == 4) {
-			toastMsg("Oops...Have You Logged In?"); return;
+			toastMsg(I18n.t('error_noLogin')); return;
 		} else if (markRes == 0) {
-			toastMsg("Oops...How's Your Network?"); return;
+			toastMsg(I18n.t('error_network')); return;
 		}
 		const [error, _eventDetails] = await fetchEventDetails(this.state.eventID);
 		if (error) {
-			toastMsg("Oops...How's Your Network?"); return;
+			toastMsg(I18n.t('error_network')); return;
 		}
 		this.setState({ eventDetails: _eventDetails });
 	}

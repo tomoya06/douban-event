@@ -24,6 +24,6 @@ export const DEFAULT_LOCATION = {
 export const COLLECTION_TYPE = {
     wish: 'user_wished',
     in: 'user_participated',
-    user_wished: 'WISH',
-    user_participated: 'IN',
+    user_wished: 'wish',
+    user_participated: 'in',
 }

@@ -71,7 +71,7 @@ class HomeEventSlides extends Component {
 				<View style={styles.container}>
 					<FullScaleTouchable
 						source={require('./../../src/img/black.jpg')}
-						content={<Title>加载失败X.X点击重试</Title>}
+						content={<Title>{I18n.t('clickToReload')}</Title>}
 						callback={this._reloadCallback}
 					/>
 				</View>
@@ -86,7 +86,7 @@ class HomeEventSlides extends Component {
 	}
 
 	render() {
-		if (this.props.events.length === 0) {
+		if (this.props.events.length === 0 || this.props.isLoading) {
 			return (
 				<View style={{ flex: 1, backgroundColor: '#000' }}>
 					{this._content()}
@@ -117,7 +117,7 @@ class HomeEventSlides extends Component {
 class HomeScreen extends Component {
 
 	static navigationOptions = {
-		tabBarLabel: 'Home',
+		tabBarLabel: I18n.t('home'),
 		tabBarIcon: ({ tintColor }) => (
 			<Icon name="home" style={{ color: tintColor }} />
 		)

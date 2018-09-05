@@ -4,9 +4,9 @@ import {
 
 const LOCATION_KEY = 'LOCATION';
 const TOKEN_KEY = 'ACCESS_TOKEN';
-const USER_KEY = 'USER_INFO';
 const USER_LOGIN_KEY = 'USER_LOGIN';
 const LOGIN_DATE = 'LOGIN_DATE';
+const LOCALE_KEY = 'LOCALE';
 
 function setStorageFunctionFactory(KEY) {
 	return async function (data) {
@@ -80,3 +80,12 @@ export const getUserLogin = getStorageFunctionFactory(USER_LOGIN_KEY);
  */
 export const setLoginDate = setStorageFunctionFactory(LOGIN_DATE);
 export const getLoginDate = getStorageFunctionFactory(LOGIN_DATE);
+
+/**
+ * LOCALE FORMAT:
+ * JSON.stringify(
+ * 		locale: 'zh',
+ * )
+ */
+export const setLocale = setStorageFunctionFactory(LOCALE_KEY);
+export const getLocale = getStorageFunctionFactory(LOCALE_KEY);

@@ -35,11 +35,11 @@ class LoginScreen extends Component {
 	}
 
 	_inputMissingAlert = () => {
-		toastMsg("Oops...Something is missing.");
+		toastMsg(I18n.t('error_loginInput'));
 	}
 
 	_loginFailAlert = () => {
-		toastMsg("Oops...please try again later.");
+		toastMsg(I18n.t('error_network'));
 	}
 
 	_submitLogin = async () => {
@@ -69,16 +69,16 @@ class LoginScreen extends Component {
 			<View styleName="fill-parent md-gutter">
 				<Subtitle
 					styleName="h-center lg-gutter-vertical"
-				>LOGIN WITH DOUBAN</Subtitle>
+				>{I18n.t('loginWithDouban')}</Subtitle>
 				<TextInput
-					placeholder={'USERNAME'}
+					placeholder={I18n.t('username')}
 					onChangeText={(username) => this.setState({ username })}
 					returnKeyType='next'
 					returnKeyLabel='next'
 					onSubmitEditing={() => this._submitLogin()}
 				/>
 				<TextInput
-					placeholder={'PASSWORD'}
+					placeholder={I18n.t('password')}
 					secureTextEntry
 					onChangeText={(password) => this.setState({ password })}
 					returnKeyLabel='done'
@@ -96,7 +96,7 @@ class LoginScreen extends Component {
 				</Button>
 				{this.state.isLoginSuccess && (
 					<Button styleName="clear muted md-gutter-top" disabled={true}>
-						<Text>{I18n.fallbacks('login')+I18n.t('success')}...</Text>
+						<Text>{I18n.t('login')+I18n.t('success')}...</Text>
 					</Button>
 				)}
 

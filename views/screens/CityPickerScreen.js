@@ -40,6 +40,8 @@ import {
 import commonStyles from "./../styles/commonStyles";
 import { toastMsg } from '../../services/UtilServices';
 
+import I18n from "./../../i18n/translate";
+
 /**
  * props:
  * onPressItem: function(this.props.pinyinName, this.props.depth) 
@@ -170,10 +172,6 @@ class SpinnerView extends Component {
 
 class CityPickerScreen extends Component {
 
-	static navigationOptions = {
-		title: '城市',
-	}
-
 	constructor(props) {
 		super(props);
 
@@ -206,7 +204,7 @@ class CityPickerScreen extends Component {
 	_navigate = async (id, displayName) => {
 		const setResult = await setLocation({ id, displayName });
 		if (setResult) {
-			toastMsg(`Set Default Location To ${displayName}`);
+			toastMsg(`${I18n.t('error_setCity')}${displayName}`);
 			this.props.navigation.goBack();
 		}
 	}
@@ -217,7 +215,7 @@ class CityPickerScreen extends Component {
 				<Row style={{ height: 70 }}>
 					<NavigationBar
 						leftComponent={<GoBackButton navigation={this.props.navigation}/>}
-						centerComponent={<Title>CITY</Title>}
+						centerComponent={<Title>{I18n.t('city')}</Title>}
 					/>
 				</Row>
 				<Row>
