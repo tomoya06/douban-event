@@ -23,27 +23,40 @@ import {
  * onPress: function
  */
 class EventItem extends React.PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            event: this.props.event,
+        }
+    }
 
     _onPress = () => {
         this.props.onPressItem(this.props.event);
     }
 
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return (nextProps.event.id !== this.state.event.id);
+    // }
+
     render() {
+        console.log('1');
+        const event = this.state.event;
         return (
             <TouchableOpacity
                 onPress={this._onPress}
             >
                 <ImageBackground
                     styleName="large-ultra-wide"
-                    source={{ uri: this.props.event.image_hlarge }}
+                    source={{ uri: event.image_hlarge }}
                 >
                 </ImageBackground>
                 <View styleName="content md-gutter">
-                    <Title>{this.props.event.title}</Title>
+                    <Title>{event.title}</Title>
                     <View styleName="horizontal space-between sm-gutter-top">
-                        <Caption>{this.props.event.category_name}</Caption>
+                        <Caption>{event.category_name}</Caption>
                         <Caption>    </Caption>
-                        <Caption>{this.props.event.time_str}</Caption>
+                        <Caption>{event.time_str}</Caption>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -57,12 +70,25 @@ class EventItem extends React.PureComponent {
  * event: event
  */
 class CollectionItem extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            event: this.props.event,
+        }
+    }
+
     _onPress = () => {
         this.props.onPressItem(this.props.event);
     }
 
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return (nextProps.event.id !== this.state.event.id);
+    // }
+
     render() {
-        const event = this.props.event;
+        console.log('1');
+        const event = this.state.event;
         return (
             <TouchableOpacity
                 onPress={this._onPress}
@@ -133,7 +159,6 @@ class EventList extends PureComponent {
         return item.id;
     }
 
-    // FIXME: change to other list. do not use flatlist.
     render() {
         return (
             <FlatList
@@ -147,6 +172,8 @@ class EventList extends PureComponent {
                 onEndReached={() => this.props.fetchEventList(true)}
                 onEndReachedThreshold={0.2}
                 numColumns={this.props.grid ? 2 : 1}
+                removeClippedSubviews={true}
+                disableVirtualization={true}
             />
         )
     }
