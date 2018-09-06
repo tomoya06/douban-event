@@ -81,12 +81,12 @@ export async function fetchEventDetails(id) {
 	})
 }
 
-export async function fetchCityEvents(city, day_type = '', event_type = '', start_index = 0) {
+export async function fetchCityEvents(city, day_type = '', event_type = '', start_index = 0, count_num = 10) {
 	// const cityPY = ConvertPinyin(city);
 	// const EVENTS_URL = `${BASE_URL}/event/list?loc=${cityPY}&day_type=${day_type}&type=${event_type}&start=${start_index}`;
 	// const EVENTS_URL = start_index == 0 ? FAKE_DATA_00 : FAKE_DATA_20;
 	const EVENTS_BASE_URL = await getEventListURL();
-	const EVENTS_URL = `${EVENTS_BASE_URL}&day_type=${day_type}&type=${event_type}&start=${start_index}&count=10`;
+	const EVENTS_URL = `${EVENTS_BASE_URL}&day_type=${day_type}&type=${event_type}&start=${start_index}&count=${count_num}`;
 	return new Promise((resolve, reject) => {
 		console.log("fetching events from...", EVENTS_URL);
 		fetch(EVENTS_URL)
@@ -97,6 +97,7 @@ export async function fetchCityEvents(city, day_type = '', event_type = '', star
 			})
 			.catch((error) => {
 				// return reject(error);
+				console.log(error);
 				return resolve([error, null]);
 			})
 	})

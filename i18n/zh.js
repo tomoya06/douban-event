@@ -1,4 +1,5 @@
 export default {
+    appTitle: '豆瓣同城',
     login: '登录',
     success: '成功',
     browser: '探索',

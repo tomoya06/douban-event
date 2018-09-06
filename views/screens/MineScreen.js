@@ -59,7 +59,6 @@ class MineScreen extends Component {
 		this.setState({
 			isLoading: true,
 		})
-
 		const loginRes = await getUserLogin();
 		if (loginRes === null) { // user log out or no user login yet
 			this.setState({
@@ -106,6 +105,19 @@ class MineScreen extends Component {
 		)
 	}
 
+	_loadError = () => {
+		return (
+			<View styleName="clear vertical h-center">
+				<Image
+					styleName="small"
+					source={require('./../../src/img/crying.png')}
+				/>
+				<View styleName="md-gutter-bottom"></View>
+				<Title>{I18n.t('clickToReload')}</Title>
+			</View>
+		)
+	}
+
 	_loginAvatar = () => {
 		const info = this.state.userMEinfo;
 		return (
@@ -132,12 +144,24 @@ class MineScreen extends Component {
 	render() {
 		const MEinfo = this.state.userMEinfo;
 
-		// TODO: let user reload if fetch info error
 		if (this.state.isLoading) {
 			return (
 				<View style={{ backgroundColor: '#000', flex: 1 }}>
 					<FullScaleLoading />
 				</View>
+			)
+		}
+		if (this.state.loadInfoFail) {
+			return (
+				<Grid>
+					<Row size={1}>
+						<FullScaleTouchable
+							callback={() => this._willFocusHandler()}
+							source={require('./../../src/img/black.jpg')}
+							content={this._loadError()}
+						/>
+					</Row>
+				</Grid>
 			)
 		}
 		if (MEinfo === null) {
@@ -159,7 +183,7 @@ class MineScreen extends Component {
 					<Row size={3}>
 						<FullScaleTouchable
 							callback={() => this.props.navigation.navigate('Setting')}
-							source={{}}
+							source={require('./../../src/img/avatar-background.jpg')}
 							content={this._loginAvatar()}
 						/>
 					</Row>
@@ -167,14 +191,14 @@ class MineScreen extends Component {
 						<Col>
 							<FullScaleTouchable
 								callback={() => this._navigateToCollections(COLLECTION_TYPE.wish)}
-								source={{}}
+								source={{ uri: 'https://img3.doubanio.com/pview/event_poster/large/public/411531d69fa3684.jpg' }}
 								content={<Title>{I18n.t('wish')}</Title>}
 							/>
 						</Col>
 						<Col>
 							<FullScaleTouchable
 								callback={() => this._navigateToCollections(COLLECTION_TYPE.in)}
-								source={{}}
+								source={{ uri: 'https://img3.doubanio.com/pview/event_poster/large/public/f07362a4f4fccfe.jpg' }}
 								content={<Title>{I18n.t('in')}</Title>}
 							/>
 						</Col>

@@ -5,6 +5,7 @@ import {
 	Tile,
 	Title,
 	Subtitle,
+	View,
 } from "@shoutem/ui";
 
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -15,7 +16,6 @@ import ProgressBar from "react-native-progress/Bar";
 
 import {
 	StyleSheet,
-	View
 } from "react-native";
 
 import FullScaleTouchable from "./../components/FullScaleTouchable";
@@ -55,34 +55,40 @@ class HomeEventSlides extends Component {
 		super(props);
 	}
 
-	_reloadCallback = () => {
-		if (!this.props.isLoading && this.props.loadFail) {
-			this._reloadCallback();
-		}
-	}
-
 	_content = () => {
 		if (this.props.isLoading) {
 			return (
 				<FullScaleLoading />
 			)
-		} else if (this.props.loadFail) {
+		}
+		if (this.props.loadFail) {
 			return (
-				<View style={styles.container}>
-					<FullScaleTouchable
-						source={require('./../../src/img/black.jpg')}
-						content={<Title>{I18n.t('clickToReload')}</Title>}
-						callback={this._reloadCallback}
-					/>
-				</View>
+				<FullScaleTouchable
+					source={require('./../../src/img/black.jpg')}
+					content={<Title>{I18n.t('clickToReload')}</Title>}
+					callback={this.props.reloadCallback}
+				/>
 			)
 		} else {
 			return (
-				<View style={styles.container}>
-					<Title>豆瓣同城</Title>
-				</View>
+				<FullScaleTouchable
+					source={require('./../../src/img/black.jpg')}
+					content={<Title>{I18n.t('appTitle')}</Title>}
+					callback={this.props.reloadCallback}
+				/>
 			)
 		}
+	}
+
+	_swiperItemContent = (_event) => {
+		return (
+			<View styleName="clear vertical h-center">
+				<Title>{_event.title}</Title>
+				<View styleName='md-gutter-bottom'></View>
+				<Subtitle>{_event.time_str}</Subtitle>
+				<Subtitle>{_event.address}</Subtitle>
+			</View>
+		)
 	}
 
 	render() {
@@ -104,7 +110,7 @@ class HomeEventSlides extends Component {
 					<View style={{ flex: 1 }} key={event.id}>
 						<FullScaleTouchable
 							source={{ uri: event.image_hlarge }}
-							content={<Title>{event.title}</Title>}
+							content={this._swiperItemContent(event)}
 							callback={() => this.props.eventCallback(event.id)}
 						/>
 					</View>
@@ -129,6 +135,7 @@ class HomeScreen extends Component {
 		this.state = {
 			events: [],
 			isLoading: false,
+			explore_bg: 'https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg',
 			locID: '',
 			locDisplayName: '',
 			loadHomeFail: false,
@@ -139,7 +146,7 @@ class HomeScreen extends Component {
 		await this.setState({
 			isLoading: true,
 		})
-		const [error, fetchResult] = await fetchCityEvents(this.state.locID, '', '', 0);
+		const [error, fetchResult] = await fetchCityEvents(this.state.locID, '', '', 0, 11);
 		this.setState({
 			isLoading: false,
 		})
@@ -147,7 +154,10 @@ class HomeScreen extends Component {
 		if (error) {
 			this.setState({ loadHomeFail: true });
 		} else {
-			this.setState({ events: fetchResult.events });
+			this.setState({
+				events: fetchResult.events.slice(0, 9),
+				explore_bg: fetchResult.events[10].image_hlarge,
+			});
 		}
 	}
 
@@ -207,7 +217,7 @@ class HomeScreen extends Component {
 					<HomeEventSlides
 						isLoading={this.state.isLoading}
 						loadFail={this.state.loadHomeFail}
-						reloadCallback={() => this._getLocation()}
+						reloadCallback={this._fetchEventListAsync}
 						events={this.state.events}
 						eventCallback={this._gotoEventDetails}
 					/>
@@ -215,7 +225,7 @@ class HomeScreen extends Component {
 				<Row size={2}>
 					<Col>
 						<FullScaleTouchable
-							source={{ uri: 'https://img3.doubanio.com/pview/event_poster/hlarge/public/e068d72d8ad021d.jpg' }}
+							source={{ uri: this.state.explore_bg }}
 							content={<View styleName="clear vertical h-center"><Title>{I18n.t('browser')}</Title><Subtitle>@{this.state.locDisplayName}</Subtitle></View>}
 							callback={this._gotoEventList} />
 					</Col>
