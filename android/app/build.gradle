@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
+import java.util.regex.Pattern
 
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -103,7 +104,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 0
-        versionName "0.93"
+        versionName ""
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -164,4 +165,25 @@ dependencies {
 task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
+}
+
+// 更新Android版本号，每次编译自动加1
+// 原文: https://15tar.com/android/2016/10/17/increase-version-code-automatically-while-building-release-package.html
+task('increaseVersionCode') << {
+    def buildFile = file("build.gradle")
+    def pattern = Pattern.compile("versionCode(\\s+\\d+)")
+    def buildText = buildFile.getText()
+    def matcher = pattern.matcher(buildText)
+    matcher.find()
+    def versionCode = android.defaultConfig.versionCode
+    def buildContent = matcher.replaceAll("versionCode " + ++versionCode)
+    buildFile.write(buildContent)
+
+    System.out.println("Incrementing Version Code ===> " + versionCode)
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'generateReleaseBuildConfig') {
+        task.dependsOn 'increaseVersionCode'
+    }
 }
