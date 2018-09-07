@@ -21,7 +21,7 @@ import {
 } from "react-native";
 
 import GoBackButton from "./../components/GoBackButton";
-import { toastMsg } from "./../../services/UtilServices";
+import { toastMsg, getAppVersion } from "./../../services/UtilServices";
 
 import { userLogoutService } from '../../services/UserServices';
 
@@ -34,6 +34,7 @@ export default class SettingScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			version: getAppVersion()
 		};
 	}
 
@@ -59,7 +60,8 @@ export default class SettingScreen extends Component {
 				</Row>
 				<Row>
 					<ScrollView>
-						<Divider styleName="section-header" />
+						<Divider />
+						{/* app github, version */}
 						<TouchableOpacity
 							onPress={() => this._gotoGithub()}
 						>
@@ -69,6 +71,20 @@ export default class SettingScreen extends Component {
 								<Icon styleName="disclosure" name="right-arrow" />
 							</ShRow>
 						</TouchableOpacity>
+						<Divider styleName="line" />
+						<TouchableOpacity
+							onPress={() => null}
+						>
+							<ShRow styleName="small">
+								<Icon name="about" />
+								<View styleName="horizontal space-between">
+									<Text>{I18n.t('version')}</Text>
+									<Text numberOfLines={1}>{this.state.version}</Text>
+								</View>
+							</ShRow>
+						</TouchableOpacity>
+						{/* logout */}
+						<Divider />
 						<TouchableOpacity
 							onPress={() => this._logoutHandler()}
 						>

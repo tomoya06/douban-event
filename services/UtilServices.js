@@ -11,6 +11,8 @@ import {
 
 import I18n from "./../i18n/translate";
 
+import { version } from "./../package.json";
+
 function formatDate(dateStr) {
     console.log(dateStr);
     return dateStr.replace(/(\d{4}-\d{2}-\d{2})\s(\d{2}:\d{2}:\d{2})/g, '$1T$2.000Z');
@@ -28,7 +30,7 @@ export function toastMsg(msg) {
 
 export function copyText(txt) {
     Clipboard.setString(txt);
-    toastMsg(`"${txt}" is Copied.`);
+    toastMsg(`"${txt}" ${I18n.t('error_isCopied')}`);
 }
 
 export function addEventToCalendar(eventDetails) {
@@ -84,4 +86,8 @@ export function openBrowser(_url) {
         .catch((error) => {
             console.log('error', error);
         });
+}
+
+export function getAppVersion() {
+    return version;
 }

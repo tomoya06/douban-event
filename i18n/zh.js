@@ -26,6 +26,7 @@ export default {
     error_calendarCancel: '好吧你不加就算了_(´ཀ`」 ∠)_',
     error_logoutSuccess: '你走吧_(´ཀ`」 ∠)_',
     error_setCity: '正在前往',
+    error_isCopied: '已复制到粘贴板',
     clickToReload: '网络炸了_(´ཀ`」 ∠)_点击重连',
     setting: '设定',
     logout: '注销',
@@ -33,4 +34,5 @@ export default {
     password: '密码',
     loginWithDouban: '豆瓣账号登录',
     github: '查看项目Github',
+    version: '版本',
 }

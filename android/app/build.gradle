@@ -103,7 +103,7 @@ android {
         applicationId "com.rndoubanevent"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 0
+        versionCode 1
         versionName ""
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -167,7 +167,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-// 更新Android版本号，每次编译自动加1
+// 更新Android版本号，每次编译自动�?1
 // 原文: https://15tar.com/android/2016/10/17/increase-version-code-automatically-while-building-release-package.html
 task('increaseVersionCode') << {
     def buildFile = file("build.gradle")

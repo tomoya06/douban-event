@@ -56,9 +56,6 @@ class MineScreen extends Component {
 	}
 
 	_willFocusHandler = async () => {
-		this.setState({
-			isLoading: true,
-		})
 		const loginRes = await getUserLogin();
 		if (loginRes === null) { // user log out or no user login yet
 			this.setState({
@@ -68,6 +65,9 @@ class MineScreen extends Component {
 				loadInfoFail: false,
 			})
 		} else if (loginRes.username !== this.state.currentUsername) { // new user login
+			this.setState({
+				isLoading: true,
+			})
 			const MEinfoRes = await fetchMEinfoAsync();
 			this.setState({
 				isLoading: false,
@@ -92,7 +92,6 @@ class MineScreen extends Component {
 	}
 
 	_blankAvatar = () => {
-		const info = this.state.userMEinfo;
 		return (
 			<View styleName="clear vertical h-center">
 				<Image
@@ -190,14 +189,14 @@ class MineScreen extends Component {
 						<Col>
 							<FullScaleTouchable
 								callback={() => this._navigateToCollections(COLLECTION_TYPE.wish)}
-								source={{ uri: 'https://img3.doubanio.com/pview/event_poster/large/public/411531d69fa3684.jpg' }}
+								source={{ uri: 'https://img3.doubanio.com/pview/event_poster/large/public/d03588b0154c85e.jpg' }}
 								content={<Title>{I18n.t('wish')}</Title>}
 							/>
 						</Col>
 						<Col>
 							<FullScaleTouchable
 								callback={() => this._navigateToCollections(COLLECTION_TYPE.in)}
-								source={{ uri: 'https://img3.doubanio.com/pview/event_poster/large/public/f07362a4f4fccfe.jpg' }}
+								source={{ uri: 'https://img3.doubanio.com/pview/event_poster/large/public/b25dcdbc1c8d0f3.jpg' }}
 								content={<Title>{I18n.t('in')}</Title>}
 							/>
 						</Col>
