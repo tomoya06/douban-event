@@ -44,6 +44,7 @@ import {
 	addEventToCalendar,
 	copyText,
 	toastMsg,
+	openMap,
 } from "./../../services/UtilServices";
 import FullScaleLoading from '../components/FullScaleLoading';
 
@@ -105,7 +106,7 @@ class BasicInfoRow extends Component {
 	_addEventToCalendar = () => {
 		addEventToCalendar(this.props.eventDetails);
 	}
-	// TODO: add open map util
+	
 	render() {
 		const details = this.props.eventDetails;
 		return details && (
@@ -125,7 +126,7 @@ class BasicInfoRow extends Component {
 					</ShRow>
 				</TouchableOpacity>
 				<TouchableOpacity
-					onPress={() => console.log('address pressed')}
+					onPress={() => openMap(details.geo)}
 				>
 					<ShRow>
 						<Icon name="address" />

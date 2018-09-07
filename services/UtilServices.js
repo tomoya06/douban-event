@@ -6,6 +6,7 @@ import {
     Clipboard,
     Platform,
     Share,
+    Linking,
 } from "react-native";
 
 import I18n from "./../i18n/translate";
@@ -62,4 +63,25 @@ export function shareText(title, message) {
         message,
         title,
     }, {})
+}
+
+export function openMap(geo) {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latlng = geo.split(' ').join(',');
+    const label = 'Custom Label';
+    const url = Platform.select({
+        ios: `${scheme}${label}@${latlng}`,
+        android: `${scheme}${latlng}(${latlng})`,
+    })
+    openBrowser(url);
+}
+
+export function openBrowser(_url) {
+    Linking.openURL(_url)
+        .then((result) => {
+            console.log('success', result);
+        })
+        .catch((error) => {
+            console.log('error', error);
+        });
 }

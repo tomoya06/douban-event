@@ -177,7 +177,6 @@ class MineScreen extends Component {
 				</Grid>
 			)
 		} else {
-			// TODO: add two photos as background
 			return (
 				<Grid>
 					<Row size={3}>

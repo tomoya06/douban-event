@@ -27,3 +27,5 @@ export const COLLECTION_TYPE = {
     user_wished: 'wish',
     user_participated: 'in',
 }
+
+export const PROJECT_GITHUB = 'https://github.com/tomoya06/react-native-douban-event';

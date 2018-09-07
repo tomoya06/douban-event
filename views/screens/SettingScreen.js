@@ -27,6 +27,9 @@ import { userLogoutService } from '../../services/UserServices';
 
 import I18n from "./../../i18n/translate";
 
+import { openBrowser } from "./../../services/UtilServices";
+import { PROJECT_GITHUB } from '../../utils/const';
+
 export default class SettingScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -41,6 +44,10 @@ export default class SettingScreen extends Component {
 		}
 	}
 
+	_gotoGithub = () => {
+		openBrowser(PROJECT_GITHUB);
+	}
+
 	render() {
 		return (
 			<Grid>
@@ -53,6 +60,15 @@ export default class SettingScreen extends Component {
 				<Row>
 					<ScrollView>
 						<Divider styleName="section-header" />
+						<TouchableOpacity
+							onPress={() => this._gotoGithub()}
+						>
+							<ShRow styleName="small">
+								<Icon name="github" />
+								<Text>{I18n.t('github')}</Text>
+								<Icon styleName="disclosure" name="right-arrow" />
+							</ShRow>
+						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => this._logoutHandler()}
 						>

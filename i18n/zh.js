@@ -32,4 +32,5 @@ export default {
     username: '用户名',
     password: '密码',
     loginWithDouban: '豆瓣账号登录',
+    github: '查看项目Github',
 }
