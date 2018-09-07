@@ -14,6 +14,9 @@ import SettingScreen from "./views/screens/SettingScreen";
 
 import DemoScreen from "./views/screens/DemoScreen";
 
+// TODO: change status bar background color
+// TODO: log out request for re-ensure 
+
 /**
  * Disable Debug Yellow Warning Box
  */
